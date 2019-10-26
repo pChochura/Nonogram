@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{50bc8687-3ba8-42ab-97c4-df89274ee087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{509defa7-c38e-40a0-b58d-5d53bba4fb47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Stages">
+      <UniqueIdentifier>{4e1ec55e-dd60-4afd-8226-c3427be8f89f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Stages">
+      <UniqueIdentifier>{4b31fc57-ac95-4f23-a5d2-c89effc841da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Screens">
+      <UniqueIdentifier>{a2bc36d9-c245-4369-abe9-8a840d0b39d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Screens">
+      <UniqueIdentifier>{2d7168b0-b00f-49bd-9ee3-90681a4d3d3c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBackground.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>Source Files\Models\Screens</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StageBackground.h">
+      <Filter>Header Files\Models\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>Header Files\Models\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>Header Files\Models\Stages</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
