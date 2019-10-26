@@ -1,16 +1,13 @@
 #include <vector>
-#include "StageBackground.h"
-#include "Screen.h"
+#include "Game.h"
+#include "ScreenPlay.h"
 
 int main() {
-	std::vector<Stage*> stages;
+	Game game("Nonogram");
 
-	StageBackground stageBg;
-	stages.push_back(&stageBg);
+	game.changeScreen(ScreenPlay());
 
-	Screen screen(stages, "Nonogram");
-
-	screen.show();
+	game.show();
 
 	return EXIT_SUCCESS;
 }

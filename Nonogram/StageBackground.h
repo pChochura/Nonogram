@@ -4,7 +4,7 @@
 class StageBackground : public Stage {
 public:
 	StageBackground();
-	void draw(sf::RenderWindow* window) const;
+	virtual void draw(sf::RenderWindow* window) override;
 private:
 	sf::Sprite spriteBackground;
 	sf::Texture textureBackground;

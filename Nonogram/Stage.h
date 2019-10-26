@@ -3,5 +3,5 @@
 
 class Stage {
 public:
-	virtual void draw(sf::RenderWindow* window) const = 0;
+	virtual void draw(sf::RenderWindow*) = 0;
 };
