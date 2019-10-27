@@ -6,3 +6,11 @@ void Screen::show(Context* context) const {
 		stage->draw(context);
 	}
 }
+
+void Screen::mousePressedEvent(Context* context, sf::Event event) const {
+	for (auto& stage : this->stages) {
+		if (stage->mousePressedEvent(context, event)) {
+			return;
+		}
+	}
+}

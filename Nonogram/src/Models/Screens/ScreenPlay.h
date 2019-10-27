@@ -1,6 +1,7 @@
 #pragma once
 #include "Screen.h"
 #include "../Stages/StageBackground.h"
+#include "../Stages/StageBoard.h"
 #include "../../Utils/ResourceIdentifier.h"
 
 class ScreenPlay : public Screen {
@@ -9,4 +10,5 @@ public:
 
 private:
 	StageBackground stageBackground;
+	StageBoard stageBoard;
 };

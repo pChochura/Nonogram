@@ -24,6 +24,9 @@ void Game::show() {
 			if (event.type == sf::Event::Closed) {
 				this->context->window->close();
 			}
+			if (event.type == sf::Event::MouseButtonPressed) {
+				this->screen.mousePressedEvent(this->context, event);
+			}
 		}
 
 		this->context->window->clear();
