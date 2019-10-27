@@ -1,10 +1,11 @@
 #pragma once
 #include "Screen.h"
-#include "StageBackground.h"
+#include "../Stages/StageBackground.h"
+#include "../../Utils/ResourceIdentifier.h"
 
 class ScreenPlay : public Screen {
 public:
-	ScreenPlay();
+	virtual void load(Context*) override;
 
 private:
 	StageBackground stageBackground;
