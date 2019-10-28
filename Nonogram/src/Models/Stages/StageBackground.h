@@ -6,5 +6,5 @@ class StageBackground : public Stage {
 public:
 	virtual void init(Context*) override;
 	virtual void draw(Context*) override;
-	virtual bool mousePressedEvent(Context*, sf::Event) override;
+	virtual bool onEvent(Context*, sf::Event) override;
 };

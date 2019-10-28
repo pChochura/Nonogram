@@ -7,9 +7,9 @@ void Screen::show(Context* context) const {
 	}
 }
 
-void Screen::mousePressedEvent(Context* context, sf::Event event) const {
+void Screen::onEvent(Context* context, sf::Event event) const {
 	for (auto& stage : this->stages) {
-		if (stage->mousePressedEvent(context, event)) {
+		if (stage->onEvent(context, event)) {
 			return;
 		}
 	}

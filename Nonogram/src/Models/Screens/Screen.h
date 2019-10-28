@@ -7,7 +7,7 @@ class Screen {
 public:
 	virtual void load(Context*) = 0;
 	void show(Context*) const;
-	void mousePressedEvent(Context*, sf::Event) const;
+	void onEvent(Context*, sf::Event) const;
 
 protected:
 	std::vector<Stage*> stages;

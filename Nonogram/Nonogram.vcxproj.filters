@@ -95,6 +95,9 @@
     <ClInclude Include="src\Models\State.h">
       <Filter>Header Files\Models\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utils\Utils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\images\image_background.jpg">

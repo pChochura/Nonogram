@@ -23,9 +23,8 @@ void Game::show() {
 		while (this->context->window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				this->context->window->close();
-			}
-			if (event.type == sf::Event::MouseButtonPressed) {
-				this->screen.mousePressedEvent(this->context, event);
+			} else {
+				this->screen.onEvent(this->context, event);
 			}
 		}
 
