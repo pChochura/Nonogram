@@ -3,13 +3,12 @@
 
 class Game {
 public:
-	Game(Screen& firstScreen, std::string title, int width = 480, int height = 640);
+	Game(Screen& firstScreen, std::string_view title, int width = 480, int height = 640);
 	void changeScreen(Screen&);
 	void show();
 
 private:
 	int width, height;
-	std::string title;
 	Screen& screen;
 	Context* context;
 };
