@@ -18,10 +18,13 @@ private:
 	void markTile(sf::Vector2i) const;
 
 private:
+	float scale;
+	float scaleAmount;
 	float tileSize;
+	bool isPanning;
 	Board* board;
-	sf::Vector2f scale;
-	sf::Vector2i padding;
-	sf::Vector2i offset;
+	sf::Vector2i tileMargin;
+	sf::Vector2i boardPadding;
+	sf::Vector2i boardOffset;
 	sf::Vector2i startPos;
 };

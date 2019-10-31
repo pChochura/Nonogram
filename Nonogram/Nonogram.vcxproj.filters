@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Models\Enums">
       <UniqueIdentifier>{4ee60312-5f19-4e1f-b607-600e32bf0b2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{e265454d-c582-433f-b7c1-bca7af804636}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Models\Stages\StageBackground.cpp">

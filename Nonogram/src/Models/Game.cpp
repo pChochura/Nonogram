@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "../Utils/ResourceIdentifier.h"
 
-Game::Game(Screen& firstScreen, std::string_view title, int width, int height) : screen(firstScreen) {
+Game::Game(Screen& firstScreen, std::string title, int width, int height) : screen(firstScreen) {
 	this->width = width;
 	this->height = height;
 	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Titlebar | sf::Style::Close));
