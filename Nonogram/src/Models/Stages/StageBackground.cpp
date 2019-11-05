@@ -3,10 +3,14 @@
 #include "../../Utils/ResourceIdentifier.h"
 
 void StageBackground::init(Context* context) {
-	context->textures.load(Textures::Background, "data/Textures/image_background.jpg");
+	context->textures.load(Textures::Background, "data/Textures/image_background.png");
+
+	this->view = context->window->getDefaultView();
 }
 
 void StageBackground::draw(Context* context) {
+	context->window->setView(this->view);
+
 	sf::Sprite sprite;
 	sprite.setTexture(context->textures.get(Textures::Background));
 	context->window->draw(sprite);

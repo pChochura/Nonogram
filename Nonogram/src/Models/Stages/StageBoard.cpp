@@ -1,15 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include <iostream>
 #include "../Board.h"
 #include "../Enums/Difficulty.h"
 #include "../Stages/StageBoard.h"
 #include "../../Utils/Utils.h"
 #include "../../Utils/ResourceIdentifier.h"
+#include "../../Models/Shapes/RoundedRectangleShape.h"
 
 void StageBoard::init(Context* context) {
-	context->fonts.load(Fonts::Arcon, "data/Fonts/Arcon.otf");
-
 	this->view = context->window->getDefaultView();
 
 	this->board = new Board;
@@ -18,14 +16,14 @@ void StageBoard::init(Context* context) {
 
 	this->board->random(Difficulty::BabyStyle);
 
-	float width = (float) (context->window->getSize().x - this->boardPadding.x) / this->board->width;
-	float height = (float) (context->window->getSize().y - this->boardPadding.y) / this->board->height;
+	auto windowSize = context->window->getSize();
+	float width = (float) (windowSize.x - this->boardPadding.x) / this->board->width;
+	float height = (float) (windowSize.y - this->boardPadding.y) / this->board->height;
 
 	this->tileSize = std::min(width, height);
 	this->scaleAmount = 1.1f;
 	this->scale = 1.0f;
 
-	auto windowSize = context->window->getSize();
 	this->boardOffset.x = (int)(windowSize.x - this->board->width * this->tileSize + boardPadding.x / 2) / 2;
 	this->boardOffset.y = (int)(windowSize.y - this->board->height * this->tileSize + boardPadding.y / 2) / 2;
 }
@@ -34,7 +32,6 @@ void StageBoard::draw(Context* context) {
 	context->window->setView(this->view);
 
 	drawBoard(context);
-	drawValues(context);
 }
 
 bool StageBoard::onEvent(Context* context, sf::Event event) {
@@ -63,7 +60,7 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 			}
 		} else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && isPanning) {
 			sf::Vector2f offset = sf::Vector2f(this->startPos - sf::Mouse::getPosition(*context->window));
-			Utils::moveView(context, offset * this->scale);
+			Utils::moveView(context, &this->view, offset * this->scale);
 
 			this->startPos = sf::Mouse::getPosition(*context->window);
 		}
@@ -71,10 +68,10 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 	case sf::Event::MouseWheelScrolled:
 		if (event.mouseWheelScroll.delta > 0) {
 			this->scale /= this->scaleAmount;
-			Utils::scaleView(context, (1.f / this->scaleAmount), { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
+			Utils::scaleView(context, &this->view, (1.f / this->scaleAmount), { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
 		} else if (event.mouseWheelScroll.delta < 0) {
 			this->scale *= this->scaleAmount;
-			Utils::scaleView(context, this->scaleAmount, { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
+			Utils::scaleView(context, &this->view, this->scaleAmount, { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
 		}
 		break;
 	}
@@ -82,7 +79,14 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 }
 
 void StageBoard::drawBoard(Context* context) const {
-	sf::RectangleShape rect({ this->tileSize, this->tileSize });
+	sf::RoundedRectangleShape rect({ this->tileSize, this->tileSize }, 5, 50);
+	rect.setOutlineColor(sf::Color(51, 51, 51));
+
+	sf::Vector2i hoveredTile = getSelectedTile(context);
+
+	if (!isInRange(context)) {
+		hoveredTile.x = hoveredTile.y = -1;
+	}
 
 	for (int i = 0; i < this->board->width; i++) {
 		for (int j = 0; j < this->board->height; j++) {
@@ -101,51 +105,33 @@ void StageBoard::drawBoard(Context* context) const {
 				rect.setFillColor(sf::Color(51, 51, 51));
 			}
 
+			rect.setOutlineThickness(hoveredTile.x == i && hoveredTile.y == j ? -2.0f : 0.0f);
+
 			rect.setPosition(i * (this->tileSize + this->tileMargin.x) + this->boardOffset.x, j * (this->tileSize + this->tileMargin.y) + this->boardOffset.y);
 			context->window->draw(rect);
 		}
 	}
-}
 
-void StageBoard::drawValues(Context* context) const {
-	sf::Text text("", context->fonts.get(Fonts::Arcon), 15U);
-	text.setFillColor(sf::Color(255, 255, 255));
+	if (hoveredTile.x != -1 && hoveredTile.y != -1) {
+		rect.setFillColor(sf::Color(30, 82, 88, 50));
+		rect.setOutlineThickness(0.0f);
 
-	for (int i = 0; i < this->board->width; i++) {
-		auto values = this->board->getVerticalValuesFor(i);
-		int j = 0;
-		for (auto it = values.rbegin(); it != values.rend(); it++, j++) {
-			text.setString(std::to_string(*it));
-			text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
-			text.setPosition(
-				i * (this->tileSize + this->tileMargin.x) + this->tileSize / 2.0f + this->boardOffset.x, 
-				this->boardOffset.y - (text.getLocalBounds().height + 10) * (j + 1)
-			);
-			context->window->draw(text);
-		}
-	}
+		rect.setSize({ this->tileSize, (this->tileSize + this->tileMargin.y) * this->board->height - this->tileMargin.y });
+		rect.setPosition({ hoveredTile.x * (this->tileSize + this->tileMargin.x) + this->boardOffset.x, (float)this->boardOffset.y });
+		context->window->draw(rect);
 
-	for (int i = 0; i < this->board->height; i++) {
-		auto values = this->board->getHorizontalValuesFor(i);
-		int j = 0;
-		for (auto it = values.rbegin(); it != values.rend(); it++, j++) {
-			text.setString(std::to_string(*it));
-			text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
-			text.setPosition(
-				this->boardOffset.x - (text.getLocalBounds().height / 2 + 10) * (j + 1),
-				i * (this->tileSize + this->tileMargin.y) + this->tileSize / 2.0f + this->boardOffset.y
-			);
-			context->window->draw(text);
-		}
+		rect.setSize({ (this->tileSize + this->tileMargin.x) * this->board->width - this->tileMargin.x, this->tileSize });
+		rect.setPosition({ (float)this->boardOffset.x, hoveredTile.y * (this->tileSize + this->tileMargin.y) + this->boardOffset.y });
+		context->window->draw(rect);
 	}
 }
 
 bool StageBoard::isInRange(Context* context) const {
 	sf::Vector2f pos = context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window));
 	return pos.x > this->boardOffset.x &&
-		pos.x < this->boardOffset.x + this->board->width * this->tileSize &&
+		pos.x < this->boardOffset.x + this->board->width * (this->tileSize + this->tileMargin.x) &&
 		pos.y > this->boardOffset.y &&
-		pos.y < this->boardOffset.y + this->board->height * this->tileSize;
+		pos.y < this->boardOffset.y + this->board->height * (this->tileSize + this->tileMargin.y);
 }
 
 sf::Vector2i StageBoard::getSelectedTile(Context* context) const {

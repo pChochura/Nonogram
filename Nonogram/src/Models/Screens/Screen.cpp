@@ -8,8 +8,8 @@ void Screen::show(Context* context) const {
 }
 
 void Screen::onEvent(Context* context, sf::Event event) const {
-	for (auto& stage : this->stages) {
-		if (stage->onEvent(context, event)) {
+	for (auto i = this->stages.rbegin(); i < this->stages.rend(); i++) {
+		if ((*i)->onEvent(context, event)) {
 			return;
 		}
 	}

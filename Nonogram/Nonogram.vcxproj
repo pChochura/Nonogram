@@ -20,22 +20,35 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Models\Actors\Actor.cpp" />
+    <ClCompile Include="src\Models\Actors\Animation.cpp" />
+    <ClCompile Include="src\Models\Actors\Button.cpp" />
     <ClCompile Include="src\Models\Board.cpp" />
     <ClCompile Include="src\Models\Game.cpp" />
     <ClCompile Include="src\Models\Screens\Screen.cpp" />
+    <ClCompile Include="src\Models\Screens\ScreenMenu.cpp" />
     <ClCompile Include="src\Models\Screens\ScreenPlay.cpp" />
+    <ClCompile Include="src\Models\Shapes\RoundedRectangleShape.cpp" />
     <ClCompile Include="src\Models\Stages\StageBackground.cpp" />
     <ClCompile Include="src\Models\Stages\StageBoard.cpp" />
+    <ClCompile Include="src\Models\Stages\StageBoardValues.cpp" />
+    <ClCompile Include="src\Models\Stages\StageDifficultyMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Models\Actors\Actor.h" />
+    <ClInclude Include="src\Models\Actors\Animation.h" />
+    <ClInclude Include="src\Models\Actors\Button.h" />
     <ClInclude Include="src\Models\Board.h" />
     <ClInclude Include="src\Models\Difficulty.h" />
     <ClInclude Include="src\Models\Game.h" />
     <ClInclude Include="src\Models\Screens\Screen.h" />
+    <ClInclude Include="src\Models\Screens\ScreenMenu.h" />
     <ClInclude Include="src\Models\Screens\ScreenPlay.h" />
+    <ClInclude Include="src\Models\Shapes\RoundedRectangleShape.h" />
     <ClInclude Include="src\Models\Stages\Stage.h" />
     <ClInclude Include="src\Models\Stages\StageBackground.h" />
     <ClInclude Include="src\Models\Stages\StageBoard.h" />
+    <ClInclude Include="src\Models\Stages\StageBoardValues.h" />
     <ClInclude Include="src\Models\State.h" />
     <ClInclude Include="src\Utils\ResourceHolder.h" />
     <ClInclude Include="src\Utils\ResourceIdentifier.h" />
@@ -43,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\images\image_background.jpg" />
+    <Image Include="data\Textures\icon.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

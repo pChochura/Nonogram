@@ -4,17 +4,14 @@
 #include "../Board.h"
 #include "../../Utils/ResourceIdentifier.h"
 
-class StageBoard : public Stage {
+class StageBoardValues : public Stage {
 public:
 	virtual void init(Context*) override;
 	virtual void draw(Context*) override;
 	virtual bool onEvent(Context*, sf::Event) override;
 
 private:
-	void drawBoard(Context*) const;
-	bool isInRange(Context*) const;
-	sf::Vector2i getSelectedTile(Context*) const;
-	void markTile(sf::Vector2i) const;
+	void drawValues(Context*) const;
 
 private:
 	float scale;

@@ -40,6 +40,18 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{e265454d-c582-433f-b7c1-bca7af804636}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Models\Shapes">
+      <UniqueIdentifier>{a6e02d0c-56ee-4279-94af-c60cbd06ceb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Shapes">
+      <UniqueIdentifier>{16b7cab8-c7cf-44a6-9929-27b1955244b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Actors">
+      <UniqueIdentifier>{55cbe822-7956-4faa-a22b-d2aa6527bd52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Actors">
+      <UniqueIdentifier>{ca3dd05f-b512-4492-8afb-8ec3a1605fcb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Models\Stages\StageBackground.cpp">
@@ -62,6 +74,27 @@
     </ClCompile>
     <ClCompile Include="src\Models\Board.cpp">
       <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Stages\StageBoardValues.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Shapes\RoundedRectangleShape.cpp">
+      <Filter>Source Files\Models\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Screens\ScreenMenu.cpp">
+      <Filter>Source Files\Models\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Actors\Animation.cpp">
+      <Filter>Source Files\Models\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Actors\Actor.cpp">
+      <Filter>Source Files\Models\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Actors\Button.cpp">
+      <Filter>Source Files\Models\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Stages\StageDifficultyMenu.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +134,30 @@
     <ClInclude Include="src\Utils\Utils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\Models\Stages\StageBoardValues.h">
+      <Filter>Header Files\Models\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Shapes\RoundedRectangleShape.h">
+      <Filter>Header Files\Models\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Screens\ScreenMenu.h">
+      <Filter>Header Files\Models\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Actors\Actor.h">
+      <Filter>Header Files\Models\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Actors\Button.h">
+      <Filter>Header Files\Models\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Actors\Animation.h">
+      <Filter>Header Files\Models\Actors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\images\image_background.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\icon.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -2,7 +2,7 @@
 #include "Screen.h"
 #include "../Stages/StageBackground.h"
 #include "../Stages/StageBoard.h"
-#include "../../Utils/ResourceIdentifier.h"
+#include "../Stages/StageBoardValues.h"
 
 class ScreenPlay : public Screen {
 public:
@@ -11,4 +11,5 @@ public:
 private:
 	StageBackground stageBackground;
 	StageBoard stageBoard;
+	StageBoardValues stageBoardValues;
 };

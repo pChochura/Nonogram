@@ -24,20 +24,18 @@ namespace Utils {
 		return ret;
 	}
 
-	inline void moveView(Context* context, sf::Vector2f translation) {
-		sf::View view{ context->window->getView() };
-		view.move(translation);
-		context->window->setView(view);
+	inline void moveView(Context* context, sf::View* view, sf::Vector2f translation) {
+		view->move(translation);
+		context->window->setView(*view);
 	}
 
-	inline void scaleView(Context* context, float scaleFactor, sf::Vector2i origin = { 0, 0 }) {
+	inline void scaleView(Context* context, sf::View* view, float scaleFactor, sf::Vector2i origin = { 0, 0 }) {
 		const sf::Vector2f beforeCoord{ context->window->mapPixelToCoords(origin) };
-		sf::View view{ context->window->getView() };
-		view.zoom(scaleFactor);
-		context->window->setView(view);
+		view->zoom(scaleFactor);
+		context->window->setView(*view);
 		const sf::Vector2f afterCoord{ context->window->mapPixelToCoords(origin) };
 		const sf::Vector2f offsetCoords{ beforeCoord - afterCoord };
-		view.move(offsetCoords);
-		context->window->setView(view);
+		view->move(offsetCoords);
+		context->window->setView(*view);
 	}
 }

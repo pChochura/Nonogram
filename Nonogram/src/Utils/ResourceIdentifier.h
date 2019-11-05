@@ -4,7 +4,8 @@
 
 namespace Textures {
 	enum ID {
-		Background
+		Background,
+		Logo
 	};
 }
 
