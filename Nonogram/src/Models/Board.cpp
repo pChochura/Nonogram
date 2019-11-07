@@ -6,7 +6,7 @@
 #include "Enums/State.h"
 #include "Enums/Difficulty.h"
 
-Board::Board() : width(0), height(0), verticalValues(nullptr), horizontalValues(nullptr), map(nullptr) {
+Board::Board() : width(0), height(0), currentState(State::Marked), verticalValues(nullptr), horizontalValues(nullptr), map(nullptr) {
 	std::srand(time(NULL));
 }
 
@@ -41,6 +41,14 @@ State Board::getAt(int x, int y) {
 
 void Board::setAt(int x, int y, State state) {
 	this->map[x][y] = state;
+}
+
+State Board::getCurrentState() {
+	return this->currentState;
+}
+
+void Board::setCurrentState(State state) {
+	this->currentState = state;
 }
 
 std::vector<int> Board::getVerticalValuesFor(int x) {

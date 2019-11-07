@@ -5,7 +5,19 @@
 namespace Textures {
 	enum ID {
 		Background,
-		Logo
+		BoardTile,
+		BoardTileSelected,
+		BoardTileWin,
+		BoardTileLost,
+		BoardTileMarked,
+		BoardTileMarkedNot,
+		BoardTileMarkedExpand,
+		BoardTileHovered,
+		BottomMenu,
+		MarkExpandMenu,
+		Heart,
+		HearBroken,
+		Circle
 	};
 }
 

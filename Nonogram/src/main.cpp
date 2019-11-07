@@ -1,8 +1,9 @@
 #include "Models/Game.h"
 #include "Models/Screens/ScreenMenu.h"
+#include "Models/Screens/ScreenPlay.h"
 
 int main() {
-	ScreenMenu screen;
+	ScreenPlay screen;
 	Game game(screen, "Nonogram");
 
 	game.show();

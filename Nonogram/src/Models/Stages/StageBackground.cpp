@@ -3,7 +3,7 @@
 #include "../../Utils/ResourceIdentifier.h"
 
 void StageBackground::init(Context* context) {
-	context->textures.load(Textures::Background, "data/Textures/image_background.png");
+	context->textures.load(Textures::Background, "data/Textures/background.png");
 
 	this->view = context->window->getDefaultView();
 }
@@ -17,5 +17,7 @@ void StageBackground::draw(Context* context) {
 }
 
 bool StageBackground::onEvent(Context* context, sf::Event event) {
+	context->window->setView(this->view);
+
 	return false;
 }

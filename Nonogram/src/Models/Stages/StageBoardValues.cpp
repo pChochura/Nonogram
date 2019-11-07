@@ -11,25 +11,11 @@ void StageBoardValues::init(Context* context) {
 	context->fonts.load(Fonts::Arcon, "data/Fonts/Arcon.otf");
 
 	this->view = context->window->getDefaultView();
-
-	this->board = new Board;
-	this->boardPadding = { 150, 200 };
-	this->tileMargin = { 2, 2 };
-
-	this->board->random(Difficulty::BabyStyle);
-
-	auto windowSize = context->window->getSize();
-	float width = (float)(windowSize.x - this->boardPadding.x) / this->board->width;
-	float height = (float)(windowSize.y - this->boardPadding.y) / this->board->height;
-
-	this->tileSize = std::min(width, height);
-	this->scaleAmount = 1.1f;
-	this->scale = 1.0f;
-
-	this->boardOffset.x = (int)(windowSize.x - this->board->width * this->tileSize + boardPadding.x / 2) / 2;
-	this->boardOffset.y = (int)(windowSize.y - this->board->height * this->tileSize + boardPadding.y / 2) / 2;
 }
 
+void StageBoardValues::setBoard(Board* board) {
+	this->board = board;
+}
 
 void StageBoardValues::draw(Context* context) {
 	context->window->setView(this->view);
@@ -38,6 +24,8 @@ void StageBoardValues::draw(Context* context) {
 }
 
 bool StageBoardValues::onEvent(Context* context, sf::Event event) {
+	context->window->setView(this->view);
+
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (event.mouseButton.button == sf::Mouse::Middle) {
@@ -53,18 +41,18 @@ bool StageBoardValues::onEvent(Context* context, sf::Event event) {
 	case sf::Event::MouseMoved:
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && isPanning) {
 			sf::Vector2f offset = sf::Vector2f(this->startPos - sf::Mouse::getPosition(*context->window));
-			Utils::moveView(context, &this->view, offset * this->scale);
+			Utils::moveView(context, &this->view, offset * this->board->scale);
 
 			this->startPos = sf::Mouse::getPosition(*context->window);
 		}
 		break;
 	case sf::Event::MouseWheelScrolled:
 		if (event.mouseWheelScroll.delta > 0) {
-			this->scale /= this->scaleAmount;
-			Utils::scaleView(context, &this->view, (1.f / this->scaleAmount), { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
+			this->board->scale /= this->board->scaleAmount;
+			Utils::scaleView(context, &this->view, (1.f / this->board->scaleAmount), { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
 		} else if (event.mouseWheelScroll.delta < 0) {
-			this->scale *= this->scaleAmount;
-			Utils::scaleView(context, &this->view, this->scaleAmount, { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
+			this->board->scale *= this->board->scaleAmount;
+			Utils::scaleView(context, &this->view, this->board->scaleAmount, { event.mouseWheelScroll.x, event.mouseWheelScroll.y });
 		}
 		break;
 	}
@@ -94,10 +82,10 @@ void StageBoardValues::drawValues(Context* context) const {
 		}
 	}
 
-	textBackground.setSize({ (this->tileSize + this->tileMargin.x) * this->board->width - this->tileMargin.x, maxVertical * (text.getLocalBounds().height + 14) });
+	textBackground.setSize({ (this->board->tileSize + this->board->tileMargin.x) * this->board->width - this->board->tileMargin.x, maxVertical * (text.getLocalBounds().height + 14) });
 	textBackground.setPosition({ 
-		(float)this->boardOffset.x,
-		this->boardOffset.y - textBackground.getSize().y - this->tileMargin.y + std::max(0.0f, viewPos.y - (this->boardOffset.y - textBackground.getSize().y - this->tileMargin.y))
+		(float)this->board->offset.x,
+		this->board->offset.y - textBackground.getSize().y - this->board->tileMargin.y + std::max(0.0f, viewPos.y - (this->board->offset.y - textBackground.getSize().y - this->board->tileMargin.y))
 	});
 	context->window->draw(textBackground);
 
@@ -108,17 +96,17 @@ void StageBoardValues::drawValues(Context* context) const {
 			text.setString(std::to_string(*it));
 			text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
 			text.setPosition(
-				i * (this->tileSize + this->tileMargin.x) + (this->tileSize + this->tileMargin.x) / 2.0f + this->boardOffset.x,
-				this->boardOffset.y - (text.getLocalBounds().height + 10) * (j + 1) + std::max(0.0f, viewPos.y - (this->boardOffset.y - (text.getLocalBounds().height + 10) * (maxVertical + 0.5f)))
+				i * (this->board->tileSize + this->board->tileMargin.x) + (this->board->tileSize + this->board->tileMargin.x) / 2.0f + this->board->offset.x,
+				this->board->offset.y - (text.getLocalBounds().height + 10) * (j + 1) + std::max(0.0f, viewPos.y - (this->board->offset.y - (text.getLocalBounds().height + 10) * (maxVertical + 0.5f)))
 			);
 			context->window->draw(text);
 		}
 	}
 
-	textBackground.setSize({ maxHorizontal * (text.getLocalBounds().height / 2 + 14), (this->tileSize + this->tileMargin.y) * this->board->height - this->tileMargin.y });
+	textBackground.setSize({ maxHorizontal * (text.getLocalBounds().height / 2 + 14), (this->board->tileSize + this->board->tileMargin.y) * this->board->height - this->board->tileMargin.y });
 	textBackground.setPosition({ 
-		this->boardOffset.x - textBackground.getSize().x - this->tileMargin.x + std::max(0.0f, viewPos.x - (this->boardOffset.x - textBackground.getSize().x - this->tileMargin.x)),
-		(float)this->boardOffset.y
+		this->board->offset.x - textBackground.getSize().x - this->board->tileMargin.x + std::max(0.0f, viewPos.x - (this->board->offset.x - textBackground.getSize().x - this->board->tileMargin.x)),
+		(float)this->board->offset.y
 	});
 	context->window->draw(textBackground);
 
@@ -129,8 +117,8 @@ void StageBoardValues::drawValues(Context* context) const {
 			text.setString(std::to_string(*it));
 			text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
 			text.setPosition(
-				this->boardOffset.x - (text.getLocalBounds().height / 2 + 10) * (j + 1) + std::max(0.0f, viewPos.x - (this->boardOffset.x - (text.getLocalBounds().height / 2 + 10) * (maxHorizontal + 0.5f))),
-				i * (this->tileSize + this->tileMargin.y) + (this->tileSize + this->tileMargin.y) / 2.0f + this->boardOffset.y
+				this->board->offset.x - (text.getLocalBounds().height / 2 + 10) * (j + 1) + std::max(0.0f, viewPos.x - (this->board->offset.x - (text.getLocalBounds().height / 2 + 10) * (maxHorizontal + 0.5f))),
+				i * (this->board->tileSize + this->board->tileMargin.y) + (this->board->tileSize + this->board->tileMargin.y) / 2.0f + this->board->offset.y
 			);
 			context->window->draw(text);
 		}

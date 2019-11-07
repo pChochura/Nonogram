@@ -9,21 +9,16 @@ public:
 	virtual void init(Context*) override;
 	virtual void draw(Context*) override;
 	virtual bool onEvent(Context*, sf::Event) override;
+	void setBoard(Board* board);
 
 private:
 	void drawBoard(Context*) const;
 	bool isInRange(Context*) const;
-	sf::Vector2i getSelectedTile(Context*) const;
 	void markTile(sf::Vector2i) const;
+	sf::Vector2i getSelectedTile(Context*) const;
 
 private:
-	float scale;
-	float scaleAmount;
-	float tileSize;
-	bool isPanning;
 	Board* board;
-	sf::Vector2i tileMargin;
-	sf::Vector2i boardPadding;
-	sf::Vector2i boardOffset;
+	bool isPanning;
 	sf::Vector2i startPos;
 };

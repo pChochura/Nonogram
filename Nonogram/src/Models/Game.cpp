@@ -4,7 +4,7 @@
 Game::Game(Screen& firstScreen, std::string title, int width, int height) : screen(firstScreen) {
 	this->width = width;
 	this->height = height;
-	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Titlebar | sf::Style::Close));
+	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Fullscreen, sf::ContextSettings(0, 0, 8)));
 
 	this->screen.load(this->context);
 }
@@ -16,11 +16,12 @@ void Game::changeScreen(Screen& screen) {
 
 void Game::show() {
 	this->context->window->setFramerateLimit(60);
+	this->context->window->setVerticalSyncEnabled(true);
 
 	while (this->context->window->isOpen()) {
 		sf::Event event;
 		while (this->context->window->pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
+			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
 				this->context->window->close();
 			} else {
 				this->screen.onEvent(this->context, event);

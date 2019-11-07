@@ -6,6 +6,10 @@
 class Actor {
 public:
 	void act(float deltaTime);
+	sf::Vector2f getPos();
+	sf::Vector2f getSize();
+	float getAlpha();
+	float getRotation();
 
 protected:
 	float alpha;

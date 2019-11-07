@@ -96,6 +96,9 @@
     <ClCompile Include="src\Models\Stages\StageDifficultyMenu.cpp">
       <Filter>Source Files\Models\Stages</Filter>
     </ClCompile>
+    <ClCompile Include="src\Models\Stages\StageInGameUI.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Models\Stages\Stage.h">
@@ -125,12 +128,6 @@
     <ClInclude Include="src\Models\Board.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="src\Models\Difficulty.h">
-      <Filter>Header Files\Models\Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Models\State.h">
-      <Filter>Header Files\Models\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="src\Utils\Utils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
@@ -152,12 +149,45 @@
     <ClInclude Include="src\Models\Actors\Animation.h">
       <Filter>Header Files\Models\Actors</Filter>
     </ClInclude>
+    <ClInclude Include="src\Models\Enums\State.h">
+      <Filter>Header Files\Models\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Enums\Difficulty.h">
+      <Filter>Header Files\Models\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Stages\StageInGameUI.h">
+      <Filter>Header Files\Models\Stages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="data\images\image_background.jpg">
+    <Image Include="data\Textures\background.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="data\Textures\icon.png">
+    <Image Include="data\Textures\board_tile.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\board_tile_hovered.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\board_tile_lost.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\board_tile_marked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\board_tile_marked_not.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\board_tile_selected.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\bottom_menu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\Textures\heart_broken.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
