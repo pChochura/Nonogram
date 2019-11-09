@@ -13,6 +13,7 @@ public:
 	void setAt(int x, int y, State state);
 	State getCurrentState();
 	void setCurrentState(State state);
+	void toggleMarked(State state);
 	std::vector<int> getVerticalValuesFor(int x);
 	std::vector<int> getHorizontalValuesFor(int y);
 

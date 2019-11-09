@@ -21,3 +21,11 @@ float Actor::getAlpha() {
 float Actor::getRotation() {
 	return this->rotation;
 }
+
+bool Actor::isVisible() {
+	return this->visible;
+}
+
+void Actor::setVsibility(bool visibility) {
+	this->visible = visibility;
+}

@@ -1,6 +1,11 @@
+#include <algorithm>
+#include <iostream>
 #include "StageInGameUI.h"
 #include "../Board.h"
+#include "../Actors/Button.h"
+#include "../Actors/ButtonGroup.h"
 #include "../Shapes/RoundedRectangleShape.h"
+#include "../../Utils/Utils.h"
 
 void StageInGameUI::init(Context* context) {
 	context->textures.load(Textures::Circle, "data/Textures/circle.png");
@@ -11,6 +16,9 @@ void StageInGameUI::init(Context* context) {
 	context->textures.load(Textures::BoardTileMarkedNot, "data/Textures/board_tile_marked_not.png");
 	context->textures.load(Textures::BoardTileMarkedExpand, "data/Textures/board_tile_marked_expand.png");
 	context->textures.load(Textures::MarkExpandMenu, "data/Textures/mark_expand_menu.png");
+	context->textures.load(Textures::ButtonMarkedToSelected, "data/Textures/button_marked_to_selected.png");
+	context->textures.load(Textures::ButtonMarkedToNot, "data/Textures/button_marked_to_not.png");
+	context->textures.load(Textures::ButtonMarkedToEmpty, "data/Textures/button_marked_to_empty.png");
 
 	context->textures.get(Textures::Circle).setSmooth(true);
 	context->textures.get(Textures::BottomMenu).setSmooth(true);
@@ -20,6 +28,9 @@ void StageInGameUI::init(Context* context) {
 	context->textures.get(Textures::BoardTileMarkedNot).setSmooth(true);
 	context->textures.get(Textures::BoardTileMarkedExpand).setSmooth(true);
 	context->textures.get(Textures::MarkExpandMenu).setSmooth(true);
+	context->textures.get(Textures::ButtonMarkedToSelected).setSmooth(true);
+	context->textures.get(Textures::ButtonMarkedToNot).setSmooth(true);
+	context->textures.get(Textures::ButtonMarkedToEmpty).setSmooth(true);
 
 	this->view = context->window->getDefaultView();
 
@@ -30,6 +41,12 @@ void StageInGameUI::init(Context* context) {
 	this->bottomMenuPos = {
 		(context->window->getSize().x - this->bottomMenuSize.x) / 2,
 		context->window->getSize().y - this->bottomMenuSize.y - 20
+	};
+
+	this->markMenuSize = { this->buttonSize * 1.5f + 2 * this->buttonPadding, this->buttonSize * 0.75f * 3 + 2 * this->buttonPadding };
+	this->markMenuPos = {
+		bottomMenuPos.x + 3 * (this->buttonSize + this->buttonPadding),
+		bottomMenuPos.y - markMenuSize.y
 	};
 
 	this->buttons.push_back(new Button(
@@ -56,13 +73,34 @@ void StageInGameUI::init(Context* context) {
 		{ this->bottomMenuPos.x + 4 * this->buttonPadding + 3 * this->buttonSize, this->bottomMenuPos.y },
 		{ this->buttonSize, this->buttonSize }
 	));
+	this->buttons.push_back(new ButtonGroup(ID::ButtonGroupMarkMenu, {
+		new Button(
+			ID::ButtonMarkedToSelected,
+			context->textures.get(Textures::ButtonMarkedToSelected),
+			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + this->buttonPadding },
+			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
+		),
+		new Button(
+			ID::ButtonMarkedToNot,
+			context->textures.get(Textures::ButtonMarkedToNot),
+			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + this->buttonSize * 0.75f + this->buttonPadding },
+			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
+		),
+		new Button(
+			ID::ButtonMarkedToEmpty,
+			context->textures.get(Textures::ButtonMarkedToEmpty),
+			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + 2 * this->buttonSize * 0.75f + this->buttonPadding },
+			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
+		)
+	}));
 
 	initClickListeners(context);
 }
 
 void StageInGameUI::initClickListeners(Context* context) {
 	for (auto& button : this->buttons) {
-		button->setOnClickListener([&](Button* b) {
+		button->setOnClickListener([&](Clickable* b, bool inside) {
+			std::cout << "id: " << b->getId();
 			switch (b->getId()) {
 			case ID::ButtonMarkedNot:
 				this->board->setCurrentState(State::MarkedNot);
@@ -73,8 +111,19 @@ void StageInGameUI::initClickListeners(Context* context) {
 			case ID::ButtonMarked:
 				this->board->setCurrentState(State::Marked);
 				break;
+			case ID::ButtonMarkedToSelected:
+				this->board->toggleMarked(State::Selected);
+				break;
+			case ID::ButtonMarkedToNot:
+				this->board->toggleMarked(State::MarkedNot);
+				break;
+			case ID::ButtonMarkedToEmpty:
+				this->board->toggleMarked(State::Empty);
+				break;
 			case ID::ButtonMarkedExpand:
-				markMenuShowed = !markMenuShowed;
+				Actor* buttonGroup = this->findById(ID::ButtonGroupMarkMenu);
+				buttonGroup->setVsibility(!buttonGroup->isVisible());
+				this->markMenuShowed = buttonGroup->isVisible();
 				break;
 			}
 		});
@@ -95,15 +144,15 @@ void StageInGameUI::draw(Context* context) {
 	sprite.setPosition({ pos.x + this->buttonPadding / 2, pos.y + this->buttonPadding / 2 });
 	context->window->draw(sprite);
 
-	for (auto& button : this->buttons) {
-		button->draw(*context->window, sf::RenderStates::Default);
-	}
-
 	if (markMenuShowed) {
 		sprite.setTexture(context->textures.get(Textures::MarkExpandMenu), true);
-		sprite.setScale(1, 1);
-		sprite.setPosition(bottomMenuPos.x + 3 * (this->buttonSize + this->buttonPadding), bottomMenuPos.y - sprite.getTexture()->getSize().y);
+		sprite.setScale(this->markMenuSize.x / sprite.getLocalBounds().width, this->markMenuSize.y / sprite.getLocalBounds().height);
+		sprite.setPosition(this->markMenuPos);
 		context->window->draw(sprite);
+	}
+
+	for (auto& button : this->buttons) {
+		button->draw(*context->window, sf::RenderStates::Default);
 	}
 }
 
@@ -111,7 +160,9 @@ bool StageInGameUI::onEvent(Context* context, sf::Event event) {
 	context->window->setView(this->view);
 
 	for (auto& button : this->buttons) {
-		button->onEvent(event);
+		if (button->onEvent(event)) {
+			return true;
+		}
 	}
 
 	sf::Vector2i pos = sf::Mouse::getPosition(*context->window);
@@ -126,6 +177,15 @@ bool StageInGameUI::onEvent(Context* context, sf::Event event) {
 
 void StageInGameUI::setBoard(Board* board) {
 	this->board = board;
+}
+
+Actor* StageInGameUI::findById(int id) {
+	for (auto& button : this->buttons) {
+		if (button->getId() == id) {
+			return button;
+		}
+	}
+	return nullptr;
 }
 
 sf::Vector2f StageInGameUI::getButtonPosByState(State state) {

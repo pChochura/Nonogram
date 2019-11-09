@@ -1,29 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <string>
-#include <cstdarg>
 #include "ResourceIdentifier.h"
 
 namespace Utils {
-	inline std::string format(const char* fmt, ...) {
-		int size = 512;
-		char* buffer = 0;
-		buffer = new char[size];
-		va_list vl;
-		va_start(vl, fmt);
-		int nsize = vsnprintf(buffer, size, fmt, vl);
-		if (size <= nsize) { //fail delete buffer and try again
-			delete[] buffer;
-			buffer = 0;
-			buffer = new char[nsize + 1]; //+1 for /0
-			nsize = vsnprintf(buffer, size, fmt, vl);
-		}
-		std::string ret(buffer);
-		va_end(vl);
-		delete[] buffer;
-		return ret;
-	}
-
 	inline void moveView(Context* context, sf::View* view, sf::Vector2f translation) {
 		view->move(translation);
 		context->window->setView(*view);
@@ -37,5 +16,10 @@ namespace Utils {
 		const sf::Vector2f offsetCoords{ beforeCoord - afterCoord };
 		view->move(offsetCoords);
 		context->window->setView(*view);
+	}
+
+	template<typename Base, typename T>
+	inline bool instanceof(const T* ptr) {
+		return dynamic_cast<const Base*>(ptr) != nullptr;
 	}
 }

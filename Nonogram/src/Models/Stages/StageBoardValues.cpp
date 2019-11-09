@@ -9,8 +9,6 @@
 
 void StageBoardValues::init(Context* context) {
 	context->fonts.load(Fonts::Arcon, "data/Fonts/Arcon.otf");
-
-	this->view = context->window->getDefaultView();
 }
 
 void StageBoardValues::setBoard(Board* board) {

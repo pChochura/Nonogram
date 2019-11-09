@@ -14,8 +14,6 @@ void StageBoard::init(Context* context) {
 	context->textures.load(Textures::BoardTileMarkedNot, "data/Textures/board_tile_marked_not.png");
 	context->textures.load(Textures::BoardTileLost, "data/Textures/board_tile_lost.png");
 	context->textures.load(Textures::BoardTileHovered, "data/Textures/board_tile_hovered.png");
-
-	this->view = context->window->getDefaultView();
 }
 
 void StageBoard::setBoard(Board* board) {
@@ -35,7 +33,12 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 	case sf::Event::MouseButtonPressed:
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			if (isInRange(context)) {
-				markTile(getSelectedTile(context));
+				sf::Vector2i selectedTile = getSelectedTile(context);
+				State state = this->board->getAt(selectedTile.x, selectedTile.y);
+				if (!this->isSwiping && (state & this->board->getCurrentState()) == this->board->getCurrentState()) {
+					this->isUndoingSelection = true;
+				}
+				markTile(selectedTile);
 				return true;
 			}
 		} else if (event.mouseButton.button == sf::Mouse::Middle) {
@@ -47,10 +50,15 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 		if (event.mouseButton.button == sf::Mouse::Middle) {
 			this->isPanning = false;
 		}
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			this->isSwiping = false;
+			this->isUndoingSelection = false;
+		}
 		break;
 	case sf::Event::MouseMoved:
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			if (isInRange(context)) {
+				this->isSwiping = true;
 				markTile(getSelectedTile(context));
 				return true;
 			}
@@ -141,15 +149,33 @@ sf::Vector2i StageBoard::getSelectedTile(Context* context) const {
 
 void StageBoard::markTile(sf::Vector2i pos) const {
 	if (pos.x < 0 || pos.x >= this->board->width || pos.y < 0 || pos.y >= this->board->height) {
-		throw std::runtime_error(Utils::format("Cannot mark tile at (%d, %d)", pos.x, pos.y).c_str());
+		return;
 	}
 	State state = this->board->getAt(pos.x, pos.y);
 	State rawState = state & (State::Empty | State::Filled);
+	State selectionState = state & ~rawState;
 	State currentState = this->board->getCurrentState();
-	if ((state & currentState) == currentState) {
-		state = state & ~currentState;
-	} else if (rawState == state) {
-		state = state | currentState;
+
+	if (this->isUndoingSelection && (currentState & (selectionState | rawState)) == selectionState) {
+		state = rawState;
+	} else {
+		switch (currentState) {
+		case State::Selected:
+			if ((selectionState & (State::Marked | State::Selected)) == selectionState) {
+				state = State::Selected;
+			}
+			break;
+		case State::Marked:
+			if ((selectionState & State::Marked) == selectionState) {
+				state = State::Marked;
+			}
+			break;
+		case State::MarkedNot:
+			if ((selectionState & State::Marked) == selectionState) {
+				state = State::MarkedNot;
+			}
+			break;
+		}
 	}
-	this->board->setAt(pos.x, pos.y, state);
+	this->board->setAt(pos.x, pos.y, rawState | state);
 }

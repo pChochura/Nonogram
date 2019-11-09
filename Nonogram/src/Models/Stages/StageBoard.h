@@ -19,6 +19,8 @@ private:
 
 private:
 	Board* board;
-	bool isPanning;
+	bool isPanning; //Indicates that the user is moving the view
+	bool isSwiping; //Indicates that the user is selecting by swiping
+	bool isUndoingSelection; //Indicates that the user started to swiping on the selected tile and want to unselect it
 	sf::Vector2i startPos;
 };

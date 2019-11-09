@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Stage.h"
 #include "../Board.h"
-#include "../Actors/Button.h"
+#include "../Actors/Actor.h"
 #include "../../Utils/ResourceIdentifier.h"
 
 class StageInGameUI : public Stage {
@@ -11,6 +11,7 @@ public:
 	virtual void draw(Context*) override;
 	virtual bool onEvent(Context*, sf::Event) override;
 	void setBoard(Board* board);
+	Actor* findById(int id);
 	sf::Vector2f getButtonPosByState(State state);
 
 private:
@@ -18,18 +19,24 @@ private:
 
 private:
 	Board* board;
-	std::vector<Button*> buttons;
+	std::vector<Actor*> buttons;
 	sf::Vector2f bottomMenuSize;
 	sf::Vector2f bottomMenuPos;
+	sf::Vector2f markMenuSize;
+	sf::Vector2f markMenuPos;
 	float buttonSize;
 	float buttonPadding;
 
 	bool markMenuShowed = false;
 
 	enum ID {
-		ButtonMarked,
-		ButtonMarkedNot,
-		ButtonSelect,
-		ButtonMarkedExpand
+		ButtonMarked = 1,
+		ButtonMarkedNot = 2,
+		ButtonSelect = 4,
+		ButtonMarkedExpand = 8,
+		ButtonMarkedToSelected = 16,
+		ButtonMarkedToNot = 32,
+		ButtonMarkedToEmpty = 64,
+		ButtonGroupMarkMenu = 128
 	};
 };

@@ -34,4 +34,9 @@ void ScreenPlay::load(Context* context) {
 	this->stageBoard.setBoard(this->board);
 	this->stageBoardValues.setBoard(this->board);
 	this->stageInGameUI.setBoard(this->board);
+
+	//Settings the same view to the stageBoard and stageBoardValues to synchronise all the movement
+	sf::View view = context->window->getDefaultView();
+	this->stageBoard.setView(view);
+	this->stageBoardValues.setView(view);
 }

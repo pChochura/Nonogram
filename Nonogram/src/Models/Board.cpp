@@ -51,6 +51,17 @@ void Board::setCurrentState(State state) {
 	this->currentState = state;
 }
 
+void Board::toggleMarked(State state) {
+	for (int i = 0; i < this->width; i++) {
+		for (int j = 0; j < this->height; j++) {
+			if ((this->map[i][j] & State::Marked) == State::Marked) {
+				State rawState = this->map[i][j] & (State::Empty | State::Filled);
+				this->map[i][j] = rawState | state;
+			}
+		}
+	}
+}
+
 std::vector<int> Board::getVerticalValuesFor(int x) {
 	return this->verticalValues[x];
 }

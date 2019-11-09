@@ -15,6 +15,9 @@ namespace Textures {
 		BoardTileHovered,
 		BottomMenu,
 		MarkExpandMenu,
+		ButtonMarkedToSelected,
+		ButtonMarkedToNot,
+		ButtonMarkedToEmpty,
 		Heart,
 		HearBroken,
 		Circle
