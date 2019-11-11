@@ -23,17 +23,17 @@ ButtonGroup::ButtonGroup(int id, std::vector<Button*> buttons) :
 	this->size = { rightMost - leftMost, bottomMost - topMost };
 }
 
-void ButtonGroup::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void ButtonGroup::draw(Context* context) const {
 	if (!this->visible) {
 		return;
 	}
 
 	for (auto& button : this->buttons) {
-		button->draw(target, states);
+		button->draw(context);
 	}
 }
 
-bool ButtonGroup::onEvent(sf::Event event) {
+bool ButtonGroup::onEvent(Context* context, sf::Event event) {
 	if (!this->visible) {
 		return false;
 	}
@@ -42,7 +42,7 @@ bool ButtonGroup::onEvent(sf::Event event) {
 		if (pos.x >= this->pos.x && pos.x <= this->pos.x + this->size.x &&
 			pos.y >= this->pos.y && pos.y <= this->pos.y + this->size.y) {
 			for (auto& button : this->buttons) {
-				if (button->onEvent(event)) {
+				if (button->onEvent(context, event)) {
 					if (this->onClickListener != nullptr) {
 						this->onClickListener(button, true);
 					}

@@ -27,4 +27,13 @@ namespace Utils {
 	inline std::vector<T> slice(std::vector<T> v, int n) {
 		return std::vector<T>(v.begin(), v.begin() + n);
 	}
+
+	inline std::string formatTime(sf::Time time) {
+		char buffer[10];
+		int seconds = (int) time.asSeconds();
+		int minutes = seconds / 60;
+		seconds = seconds - minutes * 60;
+		sprintf_s(buffer, 10, "%02d:%02d", minutes, seconds);
+		return buffer;
+	}
 }

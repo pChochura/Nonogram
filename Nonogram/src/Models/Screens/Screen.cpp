@@ -14,3 +14,7 @@ void Screen::onEvent(Context* context, sf::Event event) const {
 		}
 	}
 }
+
+void Screen::setOnChangeScreenListener(std::function<void(Screen*)> onChangeScreenListener) {
+	this->onChangeScreenListener = onChangeScreenListener;
+}

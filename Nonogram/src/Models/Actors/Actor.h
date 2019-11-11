@@ -3,12 +3,13 @@
 #include <vector>
 #include "Animation.h"
 #include "Clickable.h"
+#include "../../Utils/ResourceIdentifier.h"
 
-class Actor : public Clickable, public sf::Drawable {
+class Actor : public Clickable {
 public:
 	void act(float deltaTime);
-	virtual bool onEvent(sf::Event) = 0;
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
+	virtual bool onEvent(Context*, sf::Event) = 0;
+	virtual void draw(Context*) const = 0;
 	sf::Vector2f getPos();
 	sf::Vector2f getSize();
 	float getAlpha();

@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include <iostream>
 #include "../Board.h"
 #include "../Enums/Difficulty.h"
 #include "../Stages/StageBoard.h"
@@ -179,5 +180,10 @@ void StageBoard::markTile(sf::Vector2i pos) const {
 	this->board->setAt(pos.x, pos.y, rawState | state);
 	if (currentState == State::Selected) {
 		this->board->fillMarkedNot(pos.x, pos.y);
+	}
+
+	if (this->board->isBoardCompleted()) {
+		this->board->toggleMarked(State::MarkedNot);
+		this->board->stopTimer();
 	}
 }

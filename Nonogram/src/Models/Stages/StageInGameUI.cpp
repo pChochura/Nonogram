@@ -32,6 +32,9 @@ void StageInGameUI::init(Context* context) {
 	context->textures.get(Textures::ButtonMarkedToNot).setSmooth(true);
 	context->textures.get(Textures::ButtonMarkedToEmpty).setSmooth(true);
 
+
+	context->fonts.load(Fonts::Arcon, "data/Fonts/Arcon.otf");
+
 	this->view = context->window->getDefaultView();
 
 	this->buttonSize = 40;
@@ -41,6 +44,12 @@ void StageInGameUI::init(Context* context) {
 	this->bottomMenuPos = {
 		(context->window->getSize().x - this->bottomMenuSize.x) / 2,
 		context->window->getSize().y - this->bottomMenuSize.y - 20
+	};
+
+	this->topMenuSize = { (this->buttonSize + this->buttonPadding) * 3, this->buttonSize / 2.0f };
+	this->topMenuPos = {
+		(context->window->getSize().x - this->topMenuSize.x) / 2,
+		20
 	};
 
 	this->markMenuSize = { this->buttonSize * 1.5f + 2 * this->buttonPadding, this->buttonSize * 0.75f * 3 + 2 * this->buttonPadding };
@@ -148,6 +157,10 @@ void StageInGameUI::draw(Context* context) {
 	sprite.setPosition(this->bottomMenuPos);
 	context->window->draw(sprite);
 
+	sprite.setScale(this->topMenuSize.x / sprite.getTexture()->getSize().x, this->topMenuSize.y / sprite.getTexture()->getSize().y);
+	sprite.setPosition(this->topMenuPos);
+	context->window->draw(sprite);
+
 	sf::Vector2f pos(getButtonPosByState(this->board->getCurrentState()));
 	sprite.setTexture(context->textures.get(Textures::Circle), true);
 	sprite.setScale((this->buttonSize - this->buttonPadding) / sprite.getTexture()->getSize().x, (this->buttonSize - this->buttonPadding) / sprite.getTexture()->getSize().y);
@@ -162,15 +175,20 @@ void StageInGameUI::draw(Context* context) {
 	}
 
 	for (auto& button : this->buttons) {
-		button->draw(*context->window, sf::RenderStates::Default);
+		button->draw(context);
 	}
+
+	sf::Text text(Utils::formatTime(this->board->getElapsedTime()), context->fonts.get(Fonts::Arcon), 15U);
+	text.setPosition((context->window->getSize().x - text.getLocalBounds().width) / 2, 20);
+	text.setFillColor(sf::Color(51, 51, 51));
+	context->window->draw(text);
 }
 
 bool StageInGameUI::onEvent(Context* context, sf::Event event) {
 	context->window->setView(this->view);
 
 	for (auto& button : this->buttons) {
-		if (button->onEvent(event)) {
+		if (button->onEvent(context, event)) {
 			return true;
 		}
 	}

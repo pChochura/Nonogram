@@ -23,6 +23,8 @@ private:
 	std::vector<Actor*> buttons;
 	sf::Vector2f bottomMenuSize;
 	sf::Vector2f bottomMenuPos;
+	sf::Vector2f topMenuPos;
+	sf::Vector2f topMenuSize;
 	sf::Vector2f markMenuSize;
 	sf::Vector2f markMenuPos;
 	float buttonSize;

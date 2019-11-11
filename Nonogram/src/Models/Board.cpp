@@ -19,8 +19,23 @@ Board::~Board() {
 }
 
 void Board::random(Difficulty difficulty) {
-	this->width = std::rand() % 3 + 15;
-	this->height = std::rand() % 3 + 15;
+	int maxWidth, maxHeight;
+	switch (difficulty) {
+	case Difficulty::BabyStyle:
+		maxWidth = maxHeight = 5;
+		break;
+	case Difficulty::Decent:
+		maxWidth = maxHeight = 8;
+		break;
+	case Difficulty::Impresive:
+		maxWidth = maxHeight = 12;
+		break;
+	case Difficulty::WorldClass:
+		maxWidth = maxHeight = 16;
+		break;
+	}
+	this->width = std::rand() % 3 + maxWidth;
+	this->height = std::rand() % 3 + maxHeight;
 
 	this->map = new State * [this->width];
 	for (int i = 0; i < this->width; i++) {
@@ -202,4 +217,37 @@ std::vector<bool> Board::isHorizontalValuesCompleteFor(int y) {
 		isComplete.push_back(complete);
 	}
 	return isComplete;
+}
+
+bool Board::isBoardCompleted() {
+	int size = std::max(this->width, this->height);
+	for (int i = 0; i < size; i++) {
+		if (i < this->width) {
+			if (getVerticalValuesFor(i) != calculateVerticalValuesFor(i, State::Selected)) {
+				return false;
+			}
+		}
+		if (i < this->height) {
+			if (getHorizontalValuesFor(i) != calculateHorizontalValuesFor(i, State::Selected)) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void Board::startTimer() {
+	timePassed = sf::Time::Zero;
+	this->timer.restart();
+}
+
+void Board::stopTimer() {
+	this->timePassed = this->timer.getElapsedTime();
+}
+
+sf::Time Board::getElapsedTime() {
+	if (timePassed == sf::Time::Zero) {
+		return this->timer.getElapsedTime();
+	}
+	return timePassed;
 }

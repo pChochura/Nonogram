@@ -2,6 +2,8 @@
 #include "../../Utils/Utils.h"
 #include "../../Utils/ResourceIdentifier.h"
 
+ScreenPlay::ScreenPlay(Difficulty difficulty) : difficulty(difficulty) {}
+
 void ScreenPlay::load(Context* context) {
 	this->stageBackground.init(context);
 	this->stageBoard.init(context);
@@ -15,7 +17,7 @@ void ScreenPlay::load(Context* context) {
 
 	this->board = new Board;
 
-	this->board->random(Difficulty::WorldClass);
+	this->board->random(this->difficulty);
 
 	auto windowSize = context->window->getSize();
 

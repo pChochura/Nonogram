@@ -8,8 +8,8 @@
 #endif
 
 int main() {
-	ScreenPlay screen;
-	Game game(screen, "Nonogram");
+	ScreenMenu screen;
+	Game game(&screen, "Nonogram");
 
 	game.show();
 

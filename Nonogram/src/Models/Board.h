@@ -21,12 +21,18 @@ public:
 	std::vector<int> calculateHorizontalValuesFor(int y, State availableState = State::Filled);
 	std::vector<bool> isVerticalValuesCompleteFor(int x);
 	std::vector<bool> isHorizontalValuesCompleteFor(int y);
+	bool isBoardCompleted();
+	void startTimer();
+	void stopTimer();
+	sf::Time getElapsedTime();
 
 private:
 	void calculateVerticalValues();
 	void calculateHorizontalValues();
 
 private:
+	sf::Clock timer;
+	sf::Time timePassed;
 	std::vector<int>* verticalValues;
 	std::vector<int>* horizontalValues;
 	State** map;

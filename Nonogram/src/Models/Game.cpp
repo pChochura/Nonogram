@@ -1,17 +1,20 @@
 #include "Game.h"
 #include "../Utils/ResourceIdentifier.h"
 
-Game::Game(Screen& firstScreen, std::string title, int width, int height) : screen(firstScreen) {
+Game::Game(Screen* firstScreen, std::string title, int width, int height) : screen(firstScreen) {
 	this->width = width;
 	this->height = height;
-	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Default, sf::ContextSettings(0, 0, 8)));
+	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Fullscreen, sf::ContextSettings(0, 0, 8)));
 
-	this->screen.load(this->context);
+	changeScreen(firstScreen);
 }
 
-void Game::changeScreen(Screen& screen) {
+void Game::changeScreen(Screen* screen) {
 	this->screen = screen;
-	this->screen.load(this->context);
+	this->screen->load(this->context);
+	this->screen->setOnChangeScreenListener([&](Screen* s) {
+		changeScreen(s);
+	});
 }
 
 void Game::show() {
@@ -24,13 +27,13 @@ void Game::show() {
 			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
 				this->context->window->close();
 			} else {
-				this->screen.onEvent(this->context, event);
+				this->screen->onEvent(this->context, event);
 			}
 		}
 
 		this->context->window->clear();
 
-		this->screen.show(this->context);
+		this->screen->show(this->context);
 
 		this->context->window->display();
 	}
