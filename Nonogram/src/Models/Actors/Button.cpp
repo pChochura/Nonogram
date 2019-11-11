@@ -6,7 +6,7 @@ Button::Button(int id, std::string text, sf::Font textFont, float textSize, sf::
 	this->id = id;
 	this->pos = pos;
 	this->visible = visibility;
-	sf::Text temp(text, textFont, textSize);
+	sf::Text temp(text, textFont, (unsigned int) textSize);
 	this->size = { temp.getLocalBounds().width + padding.x * 2, temp.getLocalBounds().height + padding.y * 2 };
 }
 
@@ -50,7 +50,7 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		rect.setPosition(this->pos);
 		target.draw(rect, states);
 
-		sf::Text text(this->text, this->textFont, this->textSize);
+		sf::Text text(this->text, this->textFont, (unsigned int) this->textSize);
 		text.setFillColor(this->textColor);
 		text.setOrigin({ text.getLocalBounds().width / 2, text.getLocalBounds().height });
 		text.setPosition(this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2);

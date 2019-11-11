@@ -49,8 +49,13 @@ void StageInGameUI::init(Context* context) {
 		bottomMenuPos.y - markMenuSize.y
 	};
 
+	initButtons(context);
+	initClickListeners(context);
+}
+
+void StageInGameUI::initButtons(Context* context) {
 	this->buttons.push_back(new Button(
-		ID::ButtonMarkedNot, 
+		ID::ButtonMarkedNot,
 		context->textures.get(Textures::BoardTileMarkedNot),
 		{ this->bottomMenuPos.x + this->buttonPadding, this->bottomMenuPos.y },
 		{ this->buttonSize, this->buttonSize }
@@ -92,15 +97,13 @@ void StageInGameUI::init(Context* context) {
 			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + 2 * this->buttonSize * 0.75f + this->buttonPadding },
 			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
 		)
-	}));
-
-	initClickListeners(context);
+		}));
 }
 
 void StageInGameUI::initClickListeners(Context* context) {
+	Actor* buttonGroup;
 	for (auto& button : this->buttons) {
 		button->setOnClickListener([&](Clickable* b, bool inside) {
-			std::cout << "id: " << b->getId();
 			switch (b->getId()) {
 			case ID::ButtonMarkedNot:
 				this->board->setCurrentState(State::MarkedNot);
@@ -121,9 +124,16 @@ void StageInGameUI::initClickListeners(Context* context) {
 				this->board->toggleMarked(State::Empty);
 				break;
 			case ID::ButtonMarkedExpand:
-				Actor* buttonGroup = this->findById(ID::ButtonGroupMarkMenu);
+				buttonGroup = findById(ID::ButtonGroupMarkMenu);
 				buttonGroup->setVsibility(!buttonGroup->isVisible());
 				this->markMenuShowed = buttonGroup->isVisible();
+				break;
+			default:
+				if (!inside) {
+					buttonGroup = findById(ID::ButtonGroupMarkMenu);
+					buttonGroup->setVsibility(false);
+					this->markMenuShowed = false;
+				}
 				break;
 			}
 		});

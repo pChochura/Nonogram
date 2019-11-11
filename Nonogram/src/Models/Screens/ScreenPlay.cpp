@@ -1,4 +1,5 @@
 #include "ScreenPlay.h"
+#include "../../Utils/Utils.h"
 #include "../../Utils/ResourceIdentifier.h"
 
 void ScreenPlay::load(Context* context) {
@@ -14,10 +15,7 @@ void ScreenPlay::load(Context* context) {
 
 	this->board = new Board;
 
-	this->board->padding = { 150, 200 };
-	this->board->tileMargin = { 2, 2 };
-
-	this->board->random(Difficulty::BabyStyle);
+	this->board->random(Difficulty::WorldClass);
 
 	auto windowSize = context->window->getSize();
 
@@ -27,6 +25,9 @@ void ScreenPlay::load(Context* context) {
 	this->board->tileSize = std::min(width, height);
 	this->board->scaleAmount = 1.1f;
 	this->board->scale = 1.0f;
+
+	this->board->padding = { 150, 200 };
+	this->board->tileMargin = { (int)(this->board->tileSize / 20), (int)(this->board->tileSize / 20) };
 
 	this->board->offset.x = (int)(windowSize.x - this->board->width * this->board->tileSize + this->board->padding.x / 2) / 2;
 	this->board->offset.y = (int)(windowSize.y - this->board->height * this->board->tileSize + this->board->padding.y / 2) / 2;

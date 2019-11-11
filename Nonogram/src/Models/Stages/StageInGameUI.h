@@ -15,6 +15,7 @@ public:
 	sf::Vector2f getButtonPosByState(State state);
 
 private:
+	void initButtons(Context*);
 	void initClickListeners(Context*);
 
 private:

@@ -27,7 +27,7 @@ bool StageBoardValues::onEvent(Context* context, sf::Event event) {
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (event.mouseButton.button == sf::Mouse::Middle) {
-			this->startPos = sf::Mouse::getPosition(*context->window);
+			this->startPos = context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window));
 			this->isPanning = true;
 		}
 		break;
@@ -38,10 +38,10 @@ bool StageBoardValues::onEvent(Context* context, sf::Event event) {
 		break;
 	case sf::Event::MouseMoved:
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && isPanning) {
-			sf::Vector2f offset = sf::Vector2f(this->startPos - sf::Mouse::getPosition(*context->window));
-			Utils::moveView(context, &this->view, offset * this->board->scale);
+			sf::Vector2f offset = sf::Vector2f(this->startPos - context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window)));
+			Utils::moveView(context, &this->view, offset);
 
-			this->startPos = sf::Mouse::getPosition(*context->window);
+			this->startPos = context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window));
 		}
 		break;
 	case sf::Event::MouseWheelScrolled:
@@ -61,10 +61,16 @@ void StageBoardValues::drawValues(Context* context) const {
 	sf::RectangleShape textBackground;
 	textBackground.setFillColor(sf::Color(51, 51, 51, 51));
 
-	sf::Text text("1", context->fonts.get(Fonts::Arcon), 18U);
-	text.setFillColor(sf::Color(255, 255, 255));
+	sf::Color completeColor = sf::Color(150, 150, 150);
+	sf::Color incompleteColor = sf::Color(255, 255, 255);
+
+	sf::Text text("1", context->fonts.get(Fonts::Arcon), (unsigned int) (this->board->tileSize / 2));
+	text.setFillColor(incompleteColor);
 
 	sf::Vector2f viewPos = this->view.getCenter() - this->view.getSize() / 2.0f;
+
+	std::vector<int> values;
+	std::vector<bool> isValuesComplete;
 
 	int maxVertical = 0;
 	int maxHorizontal = 0;
@@ -80,7 +86,7 @@ void StageBoardValues::drawValues(Context* context) const {
 		}
 	}
 
-	textBackground.setSize({ (this->board->tileSize + this->board->tileMargin.x) * this->board->width - this->board->tileMargin.x, maxVertical * (text.getLocalBounds().height + 14) });
+	textBackground.setSize({ (this->board->tileSize + this->board->tileMargin.x) * this->board->width - this->board->tileMargin.x, maxVertical * (text.getLocalBounds().height + 12) });
 	textBackground.setPosition({ 
 		(float)this->board->offset.x,
 		this->board->offset.y - textBackground.getSize().y - this->board->tileMargin.y + std::max(0.0f, viewPos.y - (this->board->offset.y - textBackground.getSize().y - this->board->tileMargin.y))
@@ -88,20 +94,21 @@ void StageBoardValues::drawValues(Context* context) const {
 	context->window->draw(textBackground);
 
 	for (int i = 0; i < this->board->width; i++) {
-		auto values = this->board->getVerticalValuesFor(i);
+		values = this->board->getVerticalValuesFor(i);
 		int j = 0;
+		isValuesComplete = this->board->isVerticalValuesCompleteFor(i);
 		for (auto it = values.rbegin(); it != values.rend(); it++, j++) {
+			text.setFillColor(isValuesComplete[values.size() - j - 1] ? completeColor : incompleteColor);
 			text.setString(std::to_string(*it));
-			text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
 			text.setPosition(
-				i * (this->board->tileSize + this->board->tileMargin.x) + (this->board->tileSize + this->board->tileMargin.x) / 2.0f + this->board->offset.x,
-				this->board->offset.y - (text.getLocalBounds().height + 10) * (j + 1) + std::max(0.0f, viewPos.y - (this->board->offset.y - (text.getLocalBounds().height + 10) * (maxVertical + 0.5f)))
+				i * (this->board->tileSize + this->board->tileMargin.x) + (this->board->tileSize + this->board->tileMargin.x - text.getLocalBounds().width) / 2.0f + this->board->offset.x,
+				this->board->offset.y - (text.getLocalBounds().height + 10) * (j + 1.25f) + std::max(0.0f, viewPos.y - (this->board->offset.y - (text.getLocalBounds().height + 10) * (maxVertical + 0.5f)))
 			);
 			context->window->draw(text);
 		}
 	}
 
-	textBackground.setSize({ maxHorizontal * (text.getLocalBounds().height / 2 + 14), (this->board->tileSize + this->board->tileMargin.y) * this->board->height - this->board->tileMargin.y });
+	textBackground.setSize({ maxHorizontal * (text.getLocalBounds().height / 2 + 12), (this->board->tileSize + this->board->tileMargin.y) * this->board->height - this->board->tileMargin.y });
 	textBackground.setPosition({ 
 		this->board->offset.x - textBackground.getSize().x - this->board->tileMargin.x + std::max(0.0f, viewPos.x - (this->board->offset.x - textBackground.getSize().x - this->board->tileMargin.x)),
 		(float)this->board->offset.y
@@ -109,14 +116,15 @@ void StageBoardValues::drawValues(Context* context) const {
 	context->window->draw(textBackground);
 
 	for (int i = 0; i < this->board->height; i++) {
-		auto values = this->board->getHorizontalValuesFor(i);
+		values = this->board->getHorizontalValuesFor(i);
 		int j = 0;
+		isValuesComplete = this->board->isHorizontalValuesCompleteFor(i);
 		for (auto it = values.rbegin(); it != values.rend(); it++, j++) {
+			text.setFillColor(isValuesComplete[values.size() - j - 1] ? completeColor : incompleteColor);
 			text.setString(std::to_string(*it));
-			text.setOrigin(text.getLocalBounds().width / 2.0f, text.getLocalBounds().height / 2.0f);
 			text.setPosition(
 				this->board->offset.x - (text.getLocalBounds().height / 2 + 10) * (j + 1) + std::max(0.0f, viewPos.x - (this->board->offset.x - (text.getLocalBounds().height / 2 + 10) * (maxHorizontal + 0.5f))),
-				i * (this->board->tileSize + this->board->tileMargin.y) + (this->board->tileSize + this->board->tileMargin.y) / 2.0f + this->board->offset.y
+				i * (this->board->tileSize + this->board->tileMargin.y) + (this->board->tileSize + this->board->tileMargin.y) / 2.0f - text.getLocalBounds().height + this->board->offset.y
 			);
 			context->window->draw(text);
 		}

@@ -35,22 +35,21 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 			if (isInRange(context)) {
 				sf::Vector2i selectedTile = getSelectedTile(context);
 				State state = this->board->getAt(selectedTile.x, selectedTile.y);
-				if (!this->isSwiping && (state & this->board->getCurrentState()) == this->board->getCurrentState()) {
+				if (!this->isSwiping && (state & this->board->getCurrentState()) != State::None) {
 					this->isUndoingSelection = true;
 				}
 				markTile(selectedTile);
 				return true;
 			}
 		} else if (event.mouseButton.button == sf::Mouse::Middle) {
-			this->startPos = sf::Mouse::getPosition(*context->window);
+			this->startPos = context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window));
 			this->isPanning = true;
 		}
 		break;
 	case sf::Event::MouseButtonReleased:
 		if (event.mouseButton.button == sf::Mouse::Middle) {
 			this->isPanning = false;
-		}
-		if (event.mouseButton.button == sf::Mouse::Left) {
+		} else if (event.mouseButton.button == sf::Mouse::Left) {
 			this->isSwiping = false;
 			this->isUndoingSelection = false;
 		}
@@ -63,10 +62,10 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 				return true;
 			}
 		} else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && isPanning) {
-			sf::Vector2f offset = sf::Vector2f(this->startPos - sf::Mouse::getPosition(*context->window));
-			Utils::moveView(context, &this->view, offset * this->board->scale);
+			sf::Vector2f offset = sf::Vector2f(this->startPos - context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window)));
+			Utils::moveView(context, &this->view, offset);
 
-			this->startPos = sf::Mouse::getPosition(*context->window);
+			this->startPos = context->window->mapPixelToCoords(sf::Mouse::getPosition(*context->window));
 		}
 		break;
 	case sf::Event::MouseWheelScrolled:
@@ -97,19 +96,19 @@ void StageBoard::drawBoard(Context* context) const {
 			context->window->draw(tileEmpty);
 
 			State value = this->board->getAt(i, j);
-			if ((value & State::Selected) == State::Selected) {
+			if ((value & State::Selected) != State::None) {
 				tileMark.setTexture(context->textures.get(Textures::BoardTileSelected));
 				drawTile = true;
 			}
-			if ((value & State::Marked) == State::Marked) {
+			if ((value & State::Marked) != State::None) {
 				tileMark.setTexture(context->textures.get(Textures::BoardTileMarked));
 				drawTile = true;
 			}
-			if ((value & State::MarkedNot) == State::MarkedNot) {
+			if ((value & State::MarkedNot) != State::None) {
 				tileMark.setTexture(context->textures.get(Textures::BoardTileMarkedNot));
 				drawTile = true;
 			}
-			if ((value & State::Lost) == State::Lost) {
+			if ((value & State::Lost) != State::None) {
 				tileMark.setTexture(context->textures.get(Textures::BoardTileLost));
 				drawTile = true;
 			}
@@ -178,4 +177,7 @@ void StageBoard::markTile(sf::Vector2i pos) const {
 		}
 	}
 	this->board->setAt(pos.x, pos.y, rawState | state);
+	if (currentState == State::Selected) {
+		this->board->fillMarkedNot(pos.x, pos.y);
+	}
 }

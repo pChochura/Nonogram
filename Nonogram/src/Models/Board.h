@@ -14,8 +14,13 @@ public:
 	State getCurrentState();
 	void setCurrentState(State state);
 	void toggleMarked(State state);
+	void fillMarkedNot(int x, int y);
 	std::vector<int> getVerticalValuesFor(int x);
+	std::vector<int> calculateVerticalValuesFor(int x, State availableState = State::Filled);
 	std::vector<int> getHorizontalValuesFor(int y);
+	std::vector<int> calculateHorizontalValuesFor(int y, State availableState = State::Filled);
+	std::vector<bool> isVerticalValuesCompleteFor(int x);
+	std::vector<bool> isHorizontalValuesCompleteFor(int y);
 
 private:
 	void calculateVerticalValues();

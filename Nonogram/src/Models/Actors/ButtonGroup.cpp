@@ -37,7 +37,7 @@ bool ButtonGroup::onEvent(sf::Event event) {
 	if (!this->visible) {
 		return false;
 	}
-	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		sf::Vector2i pos = { event.mouseButton.x, event.mouseButton.y };
 		if (pos.x >= this->pos.x && pos.x <= this->pos.x + this->size.x &&
 			pos.y >= this->pos.y && pos.y <= this->pos.y + this->size.y) {

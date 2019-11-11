@@ -22,4 +22,9 @@ namespace Utils {
 	inline bool instanceof(const T* ptr) {
 		return dynamic_cast<const Base*>(ptr) != nullptr;
 	}
+
+	template<typename T>
+	inline std::vector<T> slice(std::vector<T> v, int n) {
+		return std::vector<T>(v.begin(), v.begin() + n);
+	}
 }

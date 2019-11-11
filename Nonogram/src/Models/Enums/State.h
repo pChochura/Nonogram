@@ -1,12 +1,13 @@
 #pragma once
 
 enum class State {
-	Empty = 0,
-	Filled = 1,
-	Selected = 2,
-	Marked = 4,
-	MarkedNot = 8,
-	Lost = 16
+	None = 0,
+	Empty = 1,
+	Filled = 2,
+	Selected = 4,
+	Marked = 8,
+	MarkedNot = 16,
+	Lost = 32
 };
 
 inline State operator|(State a, State b) {
@@ -19,4 +20,12 @@ inline State operator&(State a, State b) {
 
 inline State operator~(State a) {
 	return static_cast<State>(~static_cast<int>(a));
+}
+
+inline State operator>>(State a, int b) {
+	return static_cast<State>(static_cast<int>(a) >> b);
+}
+
+inline State operator<<(State a, int b) {
+	return static_cast<State>(static_cast<int>(a) << b);
 }

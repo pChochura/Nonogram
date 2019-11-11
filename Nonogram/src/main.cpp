@@ -2,6 +2,11 @@
 #include "Models/Screens/ScreenMenu.h"
 #include "Models/Screens/ScreenPlay.h"
 
+#ifndef _DEBUG
+//Disabling terminal while in realease mode
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif
+
 int main() {
 	ScreenPlay screen;
 	Game game(screen, "Nonogram");

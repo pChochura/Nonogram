@@ -37,9 +37,6 @@
     <Filter Include="Header Files\Models\Enums">
       <UniqueIdentifier>{4ee60312-5f19-4e1f-b607-600e32bf0b2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{e265454d-c582-433f-b7c1-bca7af804636}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Models\Shapes">
       <UniqueIdentifier>{a6e02d0c-56ee-4279-94af-c60cbd06ceb0}</UniqueIdentifier>
     </Filter>

@@ -17,5 +17,5 @@ private:
 private:
 	Board* board;
 	bool isPanning;
-	sf::Vector2i startPos;
+	sf::Vector2f startPos;
 };
