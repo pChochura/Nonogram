@@ -5,11 +5,12 @@
 #include "../Stages/StageBoard.h"
 #include "../Stages/StageBoardValues.h"
 #include "../Stages/StageInGameUI.h"
+#include "../Stages/StageComplete.h"
 
 class ScreenPlay : public Screen {
 public:
-	virtual void load(Context*) override;
 	ScreenPlay(Difficulty diff);
+	virtual void load(Context*) override;
 
 private:
 	Difficulty difficulty;
@@ -19,4 +20,5 @@ private:
 	StageBoard stageBoard;
 	StageBoardValues stageBoardValues;
 	StageInGameUI stageInGameUI;
+	StageComplete stageComplete;
 };

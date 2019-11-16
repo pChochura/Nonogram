@@ -4,30 +4,52 @@
 #include "Actor.h"
 #include "../../Utils/ResourceIdentifier.h"
 
+enum ButtonSize {
+	WrapContent = INT_MIN
+};
+
 class Button : public Actor {
 public:
-	Button(int id, std::string text, sf::Font textFont, float textSize, sf::Vector2f pos, sf::Vector2f padding, bool visibility = true);
-	Button(int id, sf::Texture texture, sf::Vector2f pos, sf::Vector2f size, bool visibility = true);
+	Button(int id, sf::Vector2f size = { ButtonSize::WrapContent, ButtonSize::WrapContent });
 	virtual bool onEvent(Context*, sf::Event) override;
 	virtual void draw(Context* context) const override;
-	void setTextColor(sf::Color textColor);
-	void setBackgroundColor(sf::Color backgroundColor);
-	void setTexture(sf::Texture texture);
+
+	Button* withTexture(sf::Texture texture);
+
+	Button* withPadding(sf::Vector2f padding);
+
+	Button* withText(std::string text);
+	Button* withTextSize(float textSize);
+	Button* withTextColor(sf::Color textColor);
+	Button* withTextFont(sf::Font textFont);
+
+	Button* withBackgroundColor(sf::Color backgroundColor);
+
+	Button* withPosition(sf::Vector2f position);
+
+	Button* build();
 
 private:
-	Button(int id);
 	bool isHovering(Context*) const;
+	void calculateSize();
 
 private:
-	std::string text;
-	sf::Vector2f padding;
-	sf::Color textColor = sf::Color::White;
-	sf::Color backgroundColor = sf::Color::Black;
-	sf::Font textFont;
+	bool hasBackgroundColor;
+
 	sf::Texture texture;
+
+	sf::Vector2f padding;
+
 	float textSize = -1;
 
+	std::string text;
+	sf::Color textColor;
+	sf::Font textFont;
+
+	sf::Color backgroundColor;
+
 public:
+	bool hasTexture;
 	static Button& EMPTY() {
 		static Button empty(-1);
 		return empty;

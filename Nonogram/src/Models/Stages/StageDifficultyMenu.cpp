@@ -1,43 +1,74 @@
 #include "StageDifficultyMenu.h"
+#include "../Actors/Button.h"
 #include "../Actors/ButtonGroup.h"
 
 void StageDifficultyMenu::init(Context* context) {
+	context->textures.load(Textures::ButtonBabyStyle, "data/Textures/button_baby_style.png");
+	context->textures.load(Textures::ButtonDecent, "data/Textures/button_decent.png");
+	context->textures.load(Textures::ButtonImpresive, "data/Textures/button_impresive.png");
+	context->textures.load(Textures::ButtonWorldClass, "data/Textures/button_world_class.png");
+	context->textures.load(Textures::DifficultyMenu, "data/Textures/difficulty_menu.png");
+
+	context->textures.get(Textures::ButtonBabyStyle).setSmooth(true);
+	context->textures.get(Textures::ButtonDecent).setSmooth(true);
+	context->textures.get(Textures::ButtonImpresive).setSmooth(true);
+	context->textures.get(Textures::ButtonWorldClass).setSmooth(true);
+
 	context->fonts.load(Fonts::Arcon, "data/Fonts/Arcon.otf");
+
+	context->sounds.load(Sounds::ButtonTap, "data/Sounds/tap_sound.wav");
+
+	this->tapSound = context->sounds.get(Sounds::ButtonTap);
 
 	this->view = context->window->getDefaultView();
 
-	Button *button = new Button(
-		ID::ButtonBabyStyle, "Baby Style", 
-		context->fonts.get(Fonts::Arcon), 20, 
-		{ context->window->getSize().x / 2.0f, context->window->getSize().y - 250.0f },
-		{ 50, 10 }
+	this->difficultyMenuSize = { 400, 450 };
+	this->difficultyMenuPos = { (context->window->getSize().x - this->difficultyMenuSize.x) / 2.0f, (context->window->getSize().y - this->difficultyMenuSize.y) / 2.0f };
+
+	this->buttons.push_back(
+		(new Button(ID::ButtonBabyStyle, { 200, ButtonSize::WrapContent }))
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 150.0f })
+		->withPadding({ 50, 35 })
+		->withTexture(context->textures.get(Textures::ButtonBabyStyle))
+		->withText("BABY STYLE")
+		->withTextFont(context->fonts.get(Fonts::Arcon))
+		->withTextColor(sf::Color(255, 255, 255))
+		->withTextSize(20)
+		->build()
 	);
-	button->setBackgroundColor(sf::Color(0, 150, 136));
-	this->buttons.push_back(button);
-	button = new Button(
-		ID::ButtonDecent, "Decent",
-		context->fonts.get(Fonts::Arcon), 20,
-		{ context->window->getSize().x / 2.0f, context->window->getSize().y - 200.0f },
-		{ 50, 10 }
+	this->buttons.push_back(
+		(new Button(ID::ButtonDecent, { 200, ButtonSize::WrapContent }))
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 210.0f })
+		->withPadding({ 50, 35 })
+		->withTexture(context->textures.get(Textures::ButtonDecent))
+		->withText("DECENT")
+		->withTextFont(context->fonts.get(Fonts::Arcon))
+		->withTextColor(sf::Color(255, 255, 255))
+		->withTextSize(20)
+		->build()
 	);
-	button->setBackgroundColor(sf::Color(255, 87, 34));
-	this->buttons.push_back(button);
-	button = new Button(
-		ID::ButtonImpresive, "Impresive",
-		context->fonts.get(Fonts::Arcon), 20,
-		{ context->window->getSize().x / 2.0f, context->window->getSize().y - 150.0f },
-		{ 50, 10 }
+	this->buttons.push_back(
+		(new Button(ID::ButtonImpresive, { 200, ButtonSize::WrapContent }))
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 270.0f })
+		->withPadding({ 50, 35 })
+		->withTexture(context->textures.get(Textures::ButtonImpresive))
+		->withText("IMPRESIVE")
+		->withTextFont(context->fonts.get(Fonts::Arcon))
+		->withTextColor(sf::Color(255, 255, 255))
+		->withTextSize(20)
+		->build()
 	);
-	button->setBackgroundColor(sf::Color(63, 81, 181));
-	this->buttons.push_back(button);
-	button = new Button(
-		ID::ButtonWorldClass, "World Class",
-		context->fonts.get(Fonts::Arcon), 20,
-		{ context->window->getSize().x / 2.0f, context->window->getSize().y - 100.0f },
-		{ 50, 10 }
+	this->buttons.push_back(
+		(new Button(ID::ButtonWorldClass, { 200, ButtonSize::WrapContent }))
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 330.0f })
+		->withPadding({ 50, 35 })
+		->withTexture(context->textures.get(Textures::ButtonWorldClass))
+		->withText("WORLD CLASS")
+		->withTextFont(context->fonts.get(Fonts::Arcon))
+		->withTextColor(sf::Color(255, 255, 255))
+		->withTextSize(20)
+		->build()
 	);
-	button->setBackgroundColor(sf::Color(233, 30, 99));
-	this->buttons.push_back(button);
 
 	initClickListeners(context);
 }
@@ -45,6 +76,8 @@ void StageDifficultyMenu::init(Context* context) {
 void StageDifficultyMenu::initClickListeners(Context* context) {
 	for (auto& button : this->buttons) {
 		button->setOnClickListener([&](Clickable* b, bool inside) {
+			this->sound.setBuffer(this->tapSound);
+			this->sound.play();
 			switch (b->getId()) {
 			case ID::ButtonBabyStyle:
 				this->onClickListener(Difficulty::BabyStyle);
@@ -65,6 +98,18 @@ void StageDifficultyMenu::initClickListeners(Context* context) {
 
 void StageDifficultyMenu::draw(Context* context) {
 	context->window->setView(this->view);
+
+	sf::Sprite sprite(context->textures.get(Textures::DifficultyMenu));
+	sprite.setPosition(difficultyMenuPos);
+	sprite.setScale(difficultyMenuSize.x / sprite.getLocalBounds().width, difficultyMenuSize.y / sprite.getLocalBounds().height);
+	context->window->draw(sprite);
+
+	sf::Text text("Difficulty", context->fonts.get(Fonts::Arcon), 40);
+	text.setFillColor(sf::Color(20, 37, 70));
+	text.setStyle(sf::Text::Bold);
+	text.setOrigin(text.getLocalBounds().width / 2.0f, 0);
+	text.setPosition({ context->window->getSize().x / 2.0f, difficultyMenuPos.y + 30 });
+	context->window->draw(text);
 
 	for (auto& button : this->buttons) {
 		button->draw(context);

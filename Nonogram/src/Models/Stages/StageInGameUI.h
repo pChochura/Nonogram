@@ -19,6 +19,8 @@ private:
 	void initClickListeners(Context*);
 
 private:
+	sf::SoundBuffer tapSound;
+	sf::Sound sound;
 	Board* board;
 	std::vector<Actor*> buttons;
 	sf::Vector2f bottomMenuSize;
@@ -33,13 +35,13 @@ private:
 	bool markMenuShowed = false;
 
 	enum ID {
-		ButtonMarked = 1,
-		ButtonMarkedNot = 2,
-		ButtonSelect = 4,
-		ButtonMarkedExpand = 8,
-		ButtonMarkedToSelected = 16,
-		ButtonMarkedToNot = 32,
-		ButtonMarkedToEmpty = 64,
-		ButtonGroupMarkMenu = 128
+		ButtonMarked			= (1 << 0),
+		ButtonMarkedNot			= (1 << 1),
+		ButtonSelect			= (1 << 2),
+		ButtonMarkedExpand		= (1 << 3),
+		ButtonMarkedToSelected	= (1 << 4),
+		ButtonMarkedToNot		= (1 << 5),
+		ButtonMarkedToEmpty		= (1 << 6),
+		ButtonGroupMarkMenu		= (1 << 7)
 	};
 };

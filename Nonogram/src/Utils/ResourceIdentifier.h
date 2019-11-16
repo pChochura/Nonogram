@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "ResourceHolder.h"
 
 namespace Textures {
@@ -20,7 +21,22 @@ namespace Textures {
 		ButtonMarkedToEmpty,
 		Heart,
 		HearBroken,
-		Circle
+		Circle,
+		ButtonBabyStyle,
+		ButtonDecent,
+		ButtonImpresive,
+		ButtonWorldClass,
+		DifficultyMenu,
+		WinMenu,
+		ButtonExit,
+		ButtonPlayAgain
+	};
+}
+
+namespace Sounds {
+	enum ID {
+		BoardTap,
+		ButtonTap
 	};
 }
 
@@ -31,6 +47,7 @@ namespace Fonts {
 }
 
 typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
+typedef ResourceHolder<sf::SoundBuffer, Sounds::ID> SoundHolder;
 typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
 
 struct Context {
@@ -40,5 +57,6 @@ struct Context {
 
 	sf::RenderWindow* window;
 	TextureHolder textures;
+	SoundHolder sounds;
 	FontHolder fonts;
 };

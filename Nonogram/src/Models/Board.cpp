@@ -19,13 +19,16 @@ Board::~Board() {
 }
 
 void Board::random(Difficulty difficulty) {
-	int maxWidth, maxHeight;
+	int maxWidth = 5, maxHeight = 5;
+	int constCount = 0;
 	switch (difficulty) {
 	case Difficulty::BabyStyle:
 		maxWidth = maxHeight = 5;
+		constCount = rand() % 3 + 5;
 		break;
 	case Difficulty::Decent:
 		maxWidth = maxHeight = 8;
+		constCount = rand() % 1 + 3;
 		break;
 	case Difficulty::Impresive:
 		maxWidth = maxHeight = 12;
@@ -38,16 +41,27 @@ void Board::random(Difficulty difficulty) {
 	this->height = std::rand() % 3 + maxHeight;
 
 	this->map = new State * [this->width];
+	this->mapCopy = new State * [this->width];
 	for (int i = 0; i < this->width; i++) {
 		this->map[i] = new State[this->height];
+		this->mapCopy[i] = new State[this->height];
 		for (int j = 0; j < this->height; j++) {
 			//TODO: add better algorithm to generate maps
 			this->map[i][j] = rand() % 2 == 0 ? State::Filled : State::Empty;
 		}
 	}
 
+	for (int x, y; constCount > 0; constCount--) {
+		do {
+			x = rand() % this->width;
+			y = rand() % this->height;
+		} while ((this->map[x][y] & State::Const) != State::None);
+		this->map[x][y] = this->map[x][y] | (this->map[x][y] == State::Filled ? State::Selected : State::MarkedNot) | State::Const;
+	}
+
 	calculateVerticalValues();
 	calculateHorizontalValues();
+	startTimer();
 }
 
 State Board::getAt(int x, int y) {
@@ -56,6 +70,10 @@ State Board::getAt(int x, int y) {
 
 void Board::setAt(int x, int y, State state) {
 	this->map[x][y] = state;
+
+	if (isBoardCompleted()) {
+		stopTimer();
+	}
 }
 
 State Board::getCurrentState() {
@@ -67,14 +85,20 @@ void Board::setCurrentState(State state) {
 }
 
 void Board::toggleMarked(State state) {
+	backupMap();
 	for (int i = 0; i < this->width; i++) {
 		for (int j = 0; j < this->height; j++) {
 			if ((this->map[i][j] & State::Marked) != State::None) {
 				State rawState = this->map[i][j] & (State::Empty | State::Filled);
-				this->map[i][j] = rawState | state;
-				if (state == State::Selected) {
-					fillMarkedNot(i, j);
-				}
+				this->mapCopy[i][j] = rawState | state;
+			}
+		}
+	}
+	restoreMap();
+	if (state == State::Selected) {
+		for (int i = 0; i < this->width; i++) {
+			for (int j = 0; j < this->height; j++) {
+				fillMarkedNot(i, j);
 			}
 		}
 	}
@@ -134,6 +158,22 @@ void Board::calculateHorizontalValues() {
 	this->horizontalValues = new std::vector<int>[this->height];
 	for (int i = 0; i < this->height; i++) {
 		this->horizontalValues[i] = calculateHorizontalValuesFor(i);
+	}
+}
+
+void Board::backupMap() {
+	for (int i = 0; i < this->width; i++) {
+		for (int j = 0; j < this->height; j++) {
+			this->mapCopy[i][j] = this->map[i][j];
+		}
+	}
+}
+
+void Board::restoreMap() {
+	for (int i = 0; i < this->width; i++) {
+		for (int j = 0; j < this->height; j++) {
+			this->map[i][j] = this->mapCopy[i][j];
+		}
 	}
 }
 
@@ -243,6 +283,9 @@ void Board::startTimer() {
 
 void Board::stopTimer() {
 	this->timePassed = this->timer.getElapsedTime();
+	if (this->onStopTimerListner != nullptr) {
+		this->onStopTimerListner();
+	}
 }
 
 sf::Time Board::getElapsedTime() {
@@ -250,4 +293,8 @@ sf::Time Board::getElapsedTime() {
 		return this->timer.getElapsedTime();
 	}
 	return timePassed;
+}
+
+void Board::setOnStopTimerListener(std::function<void(void)> onStopTimerListner) {
+	this->onStopTimerListner = onStopTimerListner;
 }

@@ -1,25 +1,10 @@
 #include "Button.h"
 #include "../Shapes/RoundedRectangleShape.h"
 
-Button::Button(int id, std::string text, sf::Font textFont, float textSize, sf::Vector2f pos, sf::Vector2f padding, bool visibility) :
-	text(text), textFont(textFont), textSize(textSize), padding(padding) {
+Button::Button(int id, sf::Vector2f size) {
 	this->id = id;
-	this->visible = visibility;
-	sf::Text temp(text, textFont, (unsigned int) textSize);
-	this->size = { temp.getLocalBounds().width + padding.x * 2, temp.getLocalBounds().height + padding.y * 2 };
-	this->pos = { pos.x - size.x / 2, pos.y - size.y / 2 };
-}
-
-Button::Button(int id, sf::Texture texture, sf::Vector2f pos, sf::Vector2f size, bool visibility) :
-	texture(texture) {
-	this->id = id;
-	this->pos = pos;
 	this->size = size;
-	this->visible = visibility;
-}
-
-Button::Button(int id) {
-	this->id = id;
+	this->visible = true;
 }
 
 bool Button::isHovering(Context* context) const {
@@ -51,21 +36,17 @@ void Button::draw(Context* context) const {
 		return;
 	}
 
-	if (this->textSize != -1) {
+	if (this->hasBackgroundColor) {
 		sf::Color maskColor = isHovering(context) ? sf::Color(200, 200, 200) : sf::Color(255, 255, 255);
 
 		sf::RoundedRectangleShape rect(this->size, 5, 50);
 		rect.setFillColor(this->backgroundColor * maskColor);
 		rect.setPosition(this->pos);
 		context->window->draw(rect);
+	}
 
-		sf::Text text(this->text, this->textFont, (unsigned int) this->textSize);
-		text.setFillColor(this->textColor);
-		text.setOrigin({ text.getLocalBounds().width / 2, text.getLocalBounds().height });
-		text.setPosition(this->pos.x + this->size.x / 2, this->pos.y + this->size.y / 2);
-		context->window->draw(text);
-	} else {
-		sf::Color maskColor = isHovering(context) ? sf::Color(255, 255, 255, 100) : sf::Color(255, 255, 255, 255);
+	if (this->hasTexture) {
+		sf::Color maskColor = isHovering(context) ? sf::Color(200, 200, 200, 255) : sf::Color(255, 255, 255, 255);
 
 		sf::Sprite sprite(this->texture);
 		sprite.setPosition(this->pos);
@@ -73,16 +54,72 @@ void Button::draw(Context* context) const {
 		sprite.setScale(this->size.x / this->texture.getSize().x, this->size.y / this->texture.getSize().y);
 		context->window->draw(sprite);
 	}
+
+	if (this->text.length() != 0) {
+		sf::Text text(this->text, this->textFont, (unsigned int) this->textSize);
+		text.setFillColor(this->textColor);
+		text.setPosition(this->pos.x + this->size.x / 2.0f - text.getLocalBounds().width / 2.0f, this->pos.y + this->size.y / 2.0f - text.getLocalBounds().height);
+		context->window->draw(text);
+	}
 }
 
-void Button::setTextColor(sf::Color textColor) {
-	this->textColor = textColor;
+void Button::calculateSize() {
+	sf::Text text(this->text, this->textFont, (unsigned int)this->textSize);
+	if (this->text.length() != 0) {
+		if (this->size.x == ButtonSize::WrapContent) {
+			this->size.x = text.getLocalBounds().width + this->padding.x;
+		}
+		if (this->size.y == ButtonSize::WrapContent) {
+			this->size.y = text.getLocalBounds().height + this->padding.y;
+		}
+	}
 }
 
-void Button::setBackgroundColor(sf::Color backgroundColor) {
-	this->backgroundColor = backgroundColor;
-}
-
-void Button::setTexture(sf::Texture texture) {
+Button* Button::withTexture(sf::Texture texture) {
 	this->texture = texture;
+	this->hasTexture = true;
+	return this;
+}
+
+Button* Button::withPadding(sf::Vector2f padding) {
+	this->padding = padding;
+	return this;
+}
+
+Button* Button::withText(std::string text) {
+	this->text = text;
+	return this;
+}
+
+Button* Button::withTextSize(float textSize) {
+	this->textSize = textSize;
+	return this;
+}
+
+Button* Button::withTextColor(sf::Color textColor) {
+	this->textColor = textColor;
+	return this;
+}
+
+Button* Button::withTextFont(sf::Font textFont) {
+	this->textFont = textFont;
+	return this;
+}
+
+Button* Button::withBackgroundColor(sf::Color backgroundColor) {
+	this->backgroundColor = backgroundColor;
+	this->hasBackgroundColor = true;
+	return this;
+}
+
+Button* Button::withPosition(sf::Vector2f position) {
+	this->pos = position;
+	return this;
+}
+
+Button* Button::build() {
+	if (this->size.x == ButtonSize::WrapContent || this->size.y == ButtonSize::WrapContent) {
+		this->calculateSize();
+	}
+	return this;
 }

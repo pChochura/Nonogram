@@ -24,7 +24,10 @@ namespace Utils {
 	}
 
 	template<typename T>
-	inline std::vector<T> slice(std::vector<T> v, int n) {
+	inline std::vector<T> slice(std::vector<T> v, unsigned int n) {
+		if (n >= v.size()) {
+			return v;
+		}
 		return std::vector<T>(v.begin(), v.begin() + n);
 	}
 

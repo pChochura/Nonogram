@@ -17,13 +17,17 @@ private:
 	void initClickListeners(Context*);
 
 private:
+	sf::SoundBuffer tapSound;
+	sf::Sound sound;
+	sf::Vector2f difficultyMenuSize;
+	sf::Vector2f difficultyMenuPos;
 	std::vector<Button*> buttons;
 	std::function<void(Difficulty)> onClickListener;
 
 	enum ID {
-		ButtonBabyStyle,
-		ButtonDecent,
-		ButtonImpresive,
-		ButtonWorldClass
+		ButtonBabyStyle		= (1 << 0),
+		ButtonDecent		= (1 << 1),
+		ButtonImpresive		= (1 << 2),
+		ButtonWorldClass	= (1 << 3)
 	};
 };

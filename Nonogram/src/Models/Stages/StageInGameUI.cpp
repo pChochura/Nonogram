@@ -32,21 +32,24 @@ void StageInGameUI::init(Context* context) {
 	context->textures.get(Textures::ButtonMarkedToNot).setSmooth(true);
 	context->textures.get(Textures::ButtonMarkedToEmpty).setSmooth(true);
 
-
 	context->fonts.load(Fonts::Arcon, "data/Fonts/Arcon.otf");
+
+	context->sounds.load(Sounds::ButtonTap, "data/Sounds/tap_sound.wav");
+
+	this->tapSound = context->sounds.get(Sounds::ButtonTap);
 
 	this->view = context->window->getDefaultView();
 
 	this->buttonSize = 40;
 	this->buttonPadding = 10;
 
-	this->bottomMenuSize = { (this->buttonSize + this->buttonPadding) * 4, this->buttonSize };
+	this->bottomMenuSize = { (this->buttonSize + this->buttonPadding) * 4, this->buttonSize * 1.2f };
 	this->bottomMenuPos = {
 		(context->window->getSize().x - this->bottomMenuSize.x) / 2,
 		context->window->getSize().y - this->bottomMenuSize.y - 20
 	};
 
-	this->topMenuSize = { (this->buttonSize + this->buttonPadding) * 3, this->buttonSize / 2.0f };
+	this->topMenuSize = { (this->buttonSize + this->buttonPadding) * 3, this->buttonSize / 1.5f };
 	this->topMenuPos = {
 		(context->window->getSize().x - this->topMenuSize.x) / 2,
 		20
@@ -63,56 +66,48 @@ void StageInGameUI::init(Context* context) {
 }
 
 void StageInGameUI::initButtons(Context* context) {
-	this->buttons.push_back(new Button(
-		ID::ButtonMarkedNot,
-		context->textures.get(Textures::BoardTileMarkedNot),
-		{ this->bottomMenuPos.x + this->buttonPadding, this->bottomMenuPos.y },
-		{ this->buttonSize, this->buttonSize }
-	));
-	this->buttons.push_back(new Button(
-		ID::ButtonSelect,
-		context->textures.get(Textures::BoardTileWin),
-		{ this->bottomMenuPos.x + 2 * this->buttonPadding + this->buttonSize, this->bottomMenuPos.y },
-		{ this->buttonSize, this->buttonSize }
-	));
-	this->buttons.push_back(new Button(
-		ID::ButtonMarked,
-		context->textures.get(Textures::BoardTileMarked),
-		{ this->bottomMenuPos.x + 3 * this->buttonPadding + 2 * this->buttonSize, this->bottomMenuPos.y },
-		{ this->buttonSize, this->buttonSize }
-	));
-	this->buttons.push_back(new Button(
-		ID::ButtonMarkedExpand,
-		context->textures.get(Textures::BoardTileMarkedExpand),
-		{ this->bottomMenuPos.x + 4 * this->buttonPadding + 3 * this->buttonSize, this->bottomMenuPos.y },
-		{ this->buttonSize, this->buttonSize }
-	));
+	this->buttons.push_back((new Button(ID::ButtonMarkedNot, { this->buttonSize, this->buttonSize }))
+		->withTexture(context->textures.get(Textures::BoardTileMarkedNot))
+		->withPosition({ this->bottomMenuPos.x + this->buttonPadding, this->bottomMenuPos.y + 0.1f * this->buttonSize })
+		->build()
+	);
+	this->buttons.push_back((new Button(ID::ButtonSelect, { this->buttonSize, this->buttonSize }))
+		->withTexture(context->textures.get(Textures::BoardTileWin))
+		->withPosition({ this->bottomMenuPos.x + 2 * this->buttonPadding + this->buttonSize, this->bottomMenuPos.y + 0.1f * this->buttonSize })
+		->build()
+	);
+	this->buttons.push_back((new Button(ID::ButtonMarked, { this->buttonSize, this->buttonSize }))
+		->withTexture(context->textures.get(Textures::BoardTileMarked))
+		->withPosition({ this->bottomMenuPos.x + 3 * this->buttonPadding + 2 * this->buttonSize, this->bottomMenuPos.y + 0.1f * this->buttonSize })
+		->build()
+	);
+	this->buttons.push_back((new Button(ID::ButtonMarkedExpand, { this->buttonSize, this->buttonSize }))
+		->withTexture(context->textures.get(Textures::BoardTileMarkedExpand))
+		->withPosition({ this->bottomMenuPos.x + 4 * this->buttonPadding + 3 * this->buttonSize, this->bottomMenuPos.y + 0.1f * this->buttonSize })
+		->build()
+	);
 	this->buttons.push_back(new ButtonGroup(ID::ButtonGroupMarkMenu, {
-		new Button(
-			ID::ButtonMarkedToSelected,
-			context->textures.get(Textures::ButtonMarkedToSelected),
-			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + this->buttonPadding },
-			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
-		),
-		new Button(
-			ID::ButtonMarkedToNot,
-			context->textures.get(Textures::ButtonMarkedToNot),
-			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + this->buttonSize * 0.75f + this->buttonPadding },
-			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
-		),
-		new Button(
-			ID::ButtonMarkedToEmpty,
-			context->textures.get(Textures::ButtonMarkedToEmpty),
-			{ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + 2 * this->buttonSize * 0.75f + this->buttonPadding },
-			{ this->buttonSize * 1.5f, this->buttonSize * 0.75f }
-		)
-		}));
+		(new Button(ID::ButtonMarkedToSelected, { this->buttonSize * 1.5f, this->buttonSize * 0.75f }))
+			->withTexture(context->textures.get(Textures::ButtonMarkedToSelected))
+			->withPosition({ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + this->buttonPadding })
+			->build(),
+		(new Button(ID::ButtonMarkedToNot, { this->buttonSize * 1.5f, this->buttonSize * 0.75f }))
+			->withTexture(context->textures.get(Textures::ButtonMarkedToNot))
+			->withPosition({ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + this->buttonSize * 0.75f + this->buttonPadding })
+			->build(),
+		(new Button(ID::ButtonMarkedToEmpty, { this->buttonSize * 1.5f, this->buttonSize * 0.75f }))
+			->withTexture(context->textures.get(Textures::ButtonMarkedToEmpty))
+			->withPosition({ this->markMenuPos.x + this->buttonPadding, this->markMenuPos.y + 2 * this->buttonSize * 0.75f + this->buttonPadding })
+			->build()
+	}));
 }
 
 void StageInGameUI::initClickListeners(Context* context) {
 	Actor* buttonGroup;
 	for (auto& button : this->buttons) {
 		button->setOnClickListener([&](Clickable* b, bool inside) {
+			this->sound.setBuffer(this->tapSound);
+			this->sound.play();
 			switch (b->getId()) {
 			case ID::ButtonMarkedNot:
 				this->board->setCurrentState(State::MarkedNot);
@@ -179,8 +174,16 @@ void StageInGameUI::draw(Context* context) {
 	}
 
 	sf::Text text(Utils::formatTime(this->board->getElapsedTime()), context->fonts.get(Fonts::Arcon), 15U);
-	text.setPosition((context->window->getSize().x - text.getLocalBounds().width) / 2, 20);
+	text.setPosition((context->window->getSize().x - text.getLocalBounds().width) / 2, this->topMenuPos.y + (this->topMenuSize.y - text.getLocalBounds().height) / 4.0f);
 	text.setFillColor(sf::Color(51, 51, 51));
+	context->window->draw(text);
+
+	char temp[16];
+	sprintf_s(temp, 16, "%d x %d", this->board->width, this->board->height);
+
+	text.setString(temp);
+	text.setPosition(context->window->getSize().x - text.getLocalBounds().width - 20, context->window->getSize().y - text.getLocalBounds().height - 20);
+	text.setFillColor(sf::Color(200, 200, 200));
 	context->window->draw(text);
 }
 

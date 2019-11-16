@@ -14,10 +14,12 @@ public:
 private:
 	void drawBoard(Context*) const;
 	bool isInRange(Context*) const;
-	void markTile(sf::Vector2i) const;
+	void markTile(sf::Vector2i);
 	sf::Vector2i getSelectedTile(Context*) const;
 
 private:
+	sf::SoundBuffer tapSound;
+	sf::Sound sound;
 	Board* board;
 	bool isPanning; //Indicates that the user is moving the view
 	bool isSwiping; //Indicates that the user is selecting by swiping

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <math.h>
-#include <iostream>
 #include "../Board.h"
 #include "../Enums/Difficulty.h"
 #include "../Stages/StageBoard.h"
@@ -15,6 +15,10 @@ void StageBoard::init(Context* context) {
 	context->textures.load(Textures::BoardTileMarkedNot, "data/Textures/board_tile_marked_not.png");
 	context->textures.load(Textures::BoardTileLost, "data/Textures/board_tile_lost.png");
 	context->textures.load(Textures::BoardTileHovered, "data/Textures/board_tile_hovered.png");
+
+	context->sounds.load(Sounds::BoardTap, "data/Sounds/tap_sound_3.wav");
+
+	this->tapSound = context->sounds.get(Sounds::BoardTap);
 }
 
 void StageBoard::setBoard(Board* board) {
@@ -32,14 +36,19 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
-		if (event.mouseButton.button == sf::Mouse::Left) {
+		if (event.mouseButton.button == sf::Mouse::Left || event.mouseButton.button == sf::Mouse::Right) {
 			if (isInRange(context)) {
+				State currentState = this->board->getCurrentState();
+				if (event.mouseButton.button == sf::Mouse::Right) {
+					this->board->setCurrentState(State::MarkedNot);
+				}
 				sf::Vector2i selectedTile = getSelectedTile(context);
 				State state = this->board->getAt(selectedTile.x, selectedTile.y);
 				if (!this->isSwiping && (state & this->board->getCurrentState()) != State::None) {
 					this->isUndoingSelection = true;
 				}
 				markTile(selectedTile);
+				this->board->setCurrentState(currentState);
 				return true;
 			}
 		} else if (event.mouseButton.button == sf::Mouse::Middle) {
@@ -50,16 +59,21 @@ bool StageBoard::onEvent(Context* context, sf::Event event) {
 	case sf::Event::MouseButtonReleased:
 		if (event.mouseButton.button == sf::Mouse::Middle) {
 			this->isPanning = false;
-		} else if (event.mouseButton.button == sf::Mouse::Left) {
+		} else if (event.mouseButton.button == sf::Mouse::Left || event.mouseButton.button == sf::Mouse::Right) {
 			this->isSwiping = false;
 			this->isUndoingSelection = false;
 		}
 		break;
 	case sf::Event::MouseMoved:
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 			if (isInRange(context)) {
+				State currentState = this->board->getCurrentState();
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+					this->board->setCurrentState(State::MarkedNot);
+				}
 				this->isSwiping = true;
 				markTile(getSelectedTile(context));
+				this->board->setCurrentState(currentState);
 				return true;
 			}
 		} else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle) && isPanning) {
@@ -90,6 +104,10 @@ void StageBoard::drawBoard(Context* context) const {
 	bool drawTile = false;
 
 	sf::Vector2i hoveredTile = getSelectedTile(context);
+
+	if (!isInRange(context)) {
+		hoveredTile.x = hoveredTile.y = -1;
+	}
 
 	for (int i = 0; i < this->board->width; i++) {
 		for (int j = 0; j < this->board->height; j++) {
@@ -147,7 +165,7 @@ sf::Vector2i StageBoard::getSelectedTile(Context* context) const {
 	};
 }
 
-void StageBoard::markTile(sf::Vector2i pos) const {
+void StageBoard::markTile(sf::Vector2i pos) {
 	if (pos.x < 0 || pos.x >= this->board->width || pos.y < 0 || pos.y >= this->board->height) {
 		return;
 	}
@@ -156,12 +174,16 @@ void StageBoard::markTile(sf::Vector2i pos) const {
 	State selectionState = state & ~rawState;
 	State currentState = this->board->getCurrentState();
 
+	if ((selectionState & State::Const) != State::None) {
+		return;
+	}
+
 	if (this->isUndoingSelection && (currentState & (selectionState | rawState)) == selectionState) {
 		state = rawState;
 	} else {
 		switch (currentState) {
 		case State::Selected:
-			if ((selectionState & (State::Marked | State::Selected)) == selectionState) {
+			if ((selectionState & State::Selected) == selectionState || (!this->isUndoingSelection && (selectionState & State::Marked) == selectionState)) {
 				state = State::Selected;
 			}
 			break;
@@ -177,6 +199,12 @@ void StageBoard::markTile(sf::Vector2i pos) const {
 			break;
 		}
 	}
+
+	if ((rawState | state) != this->board->getAt(pos.x, pos.y)) {
+		this->sound.setBuffer(this->tapSound);
+		this->sound.play();
+	}
+
 	this->board->setAt(pos.x, pos.y, rawState | state);
 	if (currentState == State::Selected) {
 		this->board->fillMarkedNot(pos.x, pos.y);
@@ -184,6 +212,5 @@ void StageBoard::markTile(sf::Vector2i pos) const {
 
 	if (this->board->isBoardCompleted()) {
 		this->board->toggleMarked(State::MarkedNot);
-		this->board->stopTimer();
 	}
 }

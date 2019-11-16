@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Screens/ScreenMenu.h"
 #include "../Utils/ResourceIdentifier.h"
 
 Game::Game(Screen* firstScreen, std::string title, int width, int height) : screen(firstScreen) {
@@ -24,8 +25,10 @@ void Game::show() {
 	while (this->context->window->isOpen()) {
 		sf::Event event;
 		while (this->context->window->pollEvent(event)) {
-			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
+			if (event.type == sf::Event::Closed) {
 				this->context->window->close();
+			} else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+				changeScreen(new ScreenMenu);
 			} else {
 				this->screen->onEvent(this->context, event);
 			}

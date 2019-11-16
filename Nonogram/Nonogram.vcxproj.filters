@@ -105,6 +105,12 @@
     <ClCompile Include="src\Models\Actors\Clickable.cpp">
       <Filter>Source Files\Models\Actors</Filter>
     </ClCompile>
+    <ClCompile Include="src\Models\Stages\StageComplete.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Stages\StageInMenuUI.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Models\Stages\Stage.h">
@@ -169,6 +175,12 @@
     </ClInclude>
     <ClInclude Include="src\Models\Actors\Clickable.h">
       <Filter>Header Files\Models\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Stages\StageComplete.h">
+      <Filter>Header Files\Models\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Stages\StageInMenuUI.h">
+      <Filter>Header Files\Models\Stages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 #include "Screen.h"
+#include "../Stages/StageInMenuUI.h"
 #include "../Stages/StageBackground.h"
 #include "../Stages/StageDifficultyMenu.h"
 
@@ -10,4 +11,5 @@ public:
 private:
 	StageBackground stageBackground;
 	StageDifficultyMenu stageDifficultyMenu;
+	StageInMenuUI stageInMenuUI;
 };

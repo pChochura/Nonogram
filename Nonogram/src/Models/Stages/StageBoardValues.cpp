@@ -86,7 +86,7 @@ void StageBoardValues::drawValues(Context* context) const {
 		}
 	}
 
-	textBackground.setSize({ (this->board->tileSize + this->board->tileMargin.x) * this->board->width - this->board->tileMargin.x, maxVertical * (text.getLocalBounds().height + 12) });
+	textBackground.setSize({ (this->board->tileSize + this->board->tileMargin.x) * this->board->width - this->board->tileMargin.x, maxVertical * this->board->tileSize / 2.0f });
 	textBackground.setPosition({ 
 		(float)this->board->offset.x,
 		this->board->offset.y - textBackground.getSize().y - this->board->tileMargin.y + std::max(0.0f, viewPos.y - (this->board->offset.y - textBackground.getSize().y - this->board->tileMargin.y))
@@ -102,13 +102,13 @@ void StageBoardValues::drawValues(Context* context) const {
 			text.setString(std::to_string(*it));
 			text.setPosition(
 				i * (this->board->tileSize + this->board->tileMargin.x) + (this->board->tileSize + this->board->tileMargin.x - text.getLocalBounds().width) / 2.0f + this->board->offset.x,
-				this->board->offset.y - (text.getLocalBounds().height + 10) * (j + 1.25f) + std::max(0.0f, viewPos.y - (this->board->offset.y - (text.getLocalBounds().height + 10) * (maxVertical + 0.5f)))
+				this->board->offset.y - this->board->tileSize / 2.0f * (j + 1.25f) + std::max(0.0f, viewPos.y - (this->board->offset.y - this->board->tileSize / 2.0f * maxVertical - this->board->tileMargin.y))
 			);
 			context->window->draw(text);
 		}
 	}
 
-	textBackground.setSize({ maxHorizontal * (text.getLocalBounds().height / 2 + 12), (this->board->tileSize + this->board->tileMargin.y) * this->board->height - this->board->tileMargin.y });
+	textBackground.setSize({ maxHorizontal * this->board->tileSize / 2.5f, (this->board->tileSize + this->board->tileMargin.y) * this->board->height - this->board->tileMargin.y });
 	textBackground.setPosition({ 
 		this->board->offset.x - textBackground.getSize().x - this->board->tileMargin.x + std::max(0.0f, viewPos.x - (this->board->offset.x - textBackground.getSize().x - this->board->tileMargin.x)),
 		(float)this->board->offset.y
@@ -121,10 +121,11 @@ void StageBoardValues::drawValues(Context* context) const {
 		isValuesComplete = this->board->isHorizontalValuesCompleteFor(i);
 		for (auto it = values.rbegin(); it != values.rend(); it++, j++) {
 			text.setFillColor(isValuesComplete[values.size() - j - 1] ? completeColor : incompleteColor);
+			text.setOrigin(this->board->tileSize / 5.0f, 0.0f);
 			text.setString(std::to_string(*it));
 			text.setPosition(
-				this->board->offset.x - (text.getLocalBounds().height / 2 + 10) * (j + 1) + std::max(0.0f, viewPos.x - (this->board->offset.x - (text.getLocalBounds().height / 2 + 10) * (maxHorizontal + 0.5f))),
-				i * (this->board->tileSize + this->board->tileMargin.y) + (this->board->tileSize + this->board->tileMargin.y) / 2.0f - text.getLocalBounds().height + this->board->offset.y
+				this->board->offset.x - this->board->tileSize / 2.5f * (j + 0.25f) - text.getLocalBounds().width / 2.0f + std::max(0.0f, viewPos.x - (this->board->offset.x - this->board->tileSize / 2.5f * maxHorizontal - this->board->tileMargin.x)),
+				i * (this->board->tileSize + this->board->tileMargin.y) + (this->board->tileSize + this->board->tileMargin.y - this->board->tileSize / 2.0f) / 2.0f + this->board->offset.y
 			);
 			context->window->draw(text);
 		}

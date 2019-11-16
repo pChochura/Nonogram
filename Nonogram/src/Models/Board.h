@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <functional>
 #include <SFML/Graphics.hpp>
 #include "Enums/State.h"
 #include "Enums/Difficulty.h"
@@ -25,17 +26,22 @@ public:
 	void startTimer();
 	void stopTimer();
 	sf::Time getElapsedTime();
+	void setOnStopTimerListener(std::function<void(void)> onStopTimerListner);
 
 private:
 	void calculateVerticalValues();
 	void calculateHorizontalValues();
+	void backupMap();
+	void restoreMap();
 
 private:
+	std::function<void(void)> onStopTimerListner;
 	sf::Clock timer;
 	sf::Time timePassed;
 	std::vector<int>* verticalValues;
 	std::vector<int>* horizontalValues;
 	State** map;
+	State** mapCopy;
 	State currentState;
 
 public:
