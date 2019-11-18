@@ -3,7 +3,7 @@
 
 class Game {
 public:
-	Game(Screen* firstScreen, std::string title, int width = 480, int height = 640);
+	Game(Screen* firstScreen, std::string title, int width = 1080, int height = 720);
 	void changeScreen(Screen*);
 	void show();
 

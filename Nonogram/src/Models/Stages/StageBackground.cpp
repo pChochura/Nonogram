@@ -6,6 +6,10 @@ void StageBackground::init(Context* context) {
 	context->textures.load(Textures::Background, "data/Textures/background.png");
 
 	this->view = context->window->getDefaultView();
+
+	float max = (float) std::max(context->window->getSize().x, context->window->getSize().y);
+	float ratio = 16.0f / 9.0f;
+	this->size = { max * ratio, max };
 }
 
 void StageBackground::draw(Context* context) {
@@ -13,6 +17,7 @@ void StageBackground::draw(Context* context) {
 
 	sf::Sprite sprite;
 	sprite.setTexture(context->textures.get(Textures::Background));
+	sprite.setScale(this->size.x / sprite.getLocalBounds().width, this->size.y / sprite.getLocalBounds().height);
 	context->window->draw(sprite);
 }
 

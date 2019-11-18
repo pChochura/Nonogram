@@ -7,4 +7,7 @@ public:
 	virtual void init(Context*) override;
 	virtual void draw(Context*) override;
 	virtual bool onEvent(Context*, sf::Event) override;
+
+private:
+	sf::Vector2f size;
 };
