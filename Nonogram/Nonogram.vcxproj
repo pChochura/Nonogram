@@ -30,6 +30,7 @@
     <ClCompile Include="src\Models\Screens\Screen.cpp" />
     <ClCompile Include="src\Models\Screens\ScreenMenu.cpp" />
     <ClCompile Include="src\Models\Screens\ScreenPlay.cpp" />
+    <ClCompile Include="src\Models\Screens\ScreenTutorial.cpp" />
     <ClCompile Include="src\Models\Shapes\RoundedRectangleShape.cpp" />
     <ClCompile Include="src\Models\Stages\Stage.cpp" />
     <ClCompile Include="src\Models\Stages\StageBackground.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="src\Models\Stages\StageDifficultyMenu.cpp" />
     <ClCompile Include="src\Models\Stages\StageInGameUI.cpp" />
     <ClCompile Include="src\Models\Stages\StageInMenuUI.cpp" />
+    <ClCompile Include="src\Models\Stages\StageMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Models\Actors\Actor.h" />
@@ -53,6 +55,7 @@
     <ClInclude Include="src\Models\Screens\Screen.h" />
     <ClInclude Include="src\Models\Screens\ScreenMenu.h" />
     <ClInclude Include="src\Models\Screens\ScreenPlay.h" />
+    <ClInclude Include="src\Models\Screens\ScreenTutorial.h" />
     <ClInclude Include="src\Models\Shapes\RoundedRectangleShape.h" />
     <ClInclude Include="src\Models\Stages\Stage.h" />
     <ClInclude Include="src\Models\Stages\StageBackground.h" />
@@ -61,21 +64,10 @@
     <ClInclude Include="src\Models\Stages\StageComplete.h" />
     <ClInclude Include="src\Models\Stages\StageInGameUI.h" />
     <ClInclude Include="src\Models\Stages\StageInMenuUI.h" />
+    <ClInclude Include="src\Models\Stages\StageMessage.h" />
     <ClInclude Include="src\Utils\ResourceHolder.h" />
     <ClInclude Include="src\Utils\ResourceIdentifier.h" />
     <ClInclude Include="src\Utils\Utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="data\Textures\background.png" />
-    <Image Include="data\Textures\board_tile.png" />
-    <Image Include="data\Textures\board_tile_hovered.png" />
-    <Image Include="data\Textures\board_tile_lost.png" />
-    <Image Include="data\Textures\board_tile_marked.png" />
-    <Image Include="data\Textures\board_tile_marked_not.png" />
-    <Image Include="data\Textures\board_tile_selected.png" />
-    <Image Include="data\Textures\bottom_menu.png" />
-    <Image Include="data\Textures\heart.png" />
-    <Image Include="data\Textures\heart_broken.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

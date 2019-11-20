@@ -1,12 +1,13 @@
 #include <time.h>
 #include <cstdlib>
 #include <vector>
+#include <iostream>
 #include "Board.h"
 #include "Enums/State.h"
 #include "Enums/Difficulty.h"
 #include "../Utils/Utils.h"
 
-Board::Board() : width(0), height(0), currentState(State::Marked), verticalValues(nullptr), horizontalValues(nullptr), map(nullptr) {
+Board::Board() : width(0), height(0), currentState(State::Selected), verticalValues(nullptr), horizontalValues(nullptr), map(nullptr) {
 	std::srand((unsigned int) time(NULL));
 }
 
@@ -15,30 +16,75 @@ Board::~Board() {
 	delete this->horizontalValues;
 	for (int i = 0; i < this->height; i++) {
 		delete this->map[i];
+		delete this->mapCopy[i];
+	}
+}
+
+void Board::set(std::string input) {
+	sscanf_s(input.c_str(), "%d %d", &this->width, &this->height);
+	std::reverse(input.begin(), input.end());
+
+	int count = this->width * this->height;
+	int index = 1;
+	this->map = new State * [this->width];
+	this->mapCopy = new State * [this->width];
+	for (int i = 0; i < this->width; i++) {
+		this->map[i] = new State[this->height];
+		this->mapCopy[i] = new State[this->height];
+	}
+
+	for (int i = 0; i < this->height; i++) {
+		for (int j = 0; j < this->width; j++, index++) {
+			switch (input[count - index]) {
+			case '0':
+				this->map[j][i] = State::Empty;
+				break;
+			case '1':
+				this->map[j][i] = State::Filled;
+				break;
+			case '2':
+				this->map[j][i] = State::Filled | State::Selected;
+				break;
+			}
+		}
+	}
+
+	calculateVerticalValues();
+	calculateHorizontalValues();
+	startTimer();
+
+	for (int i = 0; i < this->height; i++) {
+		for (int j = 0; j < this->width; j++, index++) {
+			fillMarkedNot(j, i);
+		}
 	}
 }
 
 void Board::random(Difficulty difficulty) {
-	int maxWidth = 5, maxHeight = 5;
-	int constCount = 0;
+	int minWidth = 1, minHeight = 1;
+	int variation = 1, constCount = 0;
 	switch (difficulty) {
 	case Difficulty::BabyStyle:
-		maxWidth = maxHeight = 5;
+		minWidth = minHeight = 4;
 		constCount = rand() % 3 + 5;
+		variation = 2;
 		break;
 	case Difficulty::Decent:
-		maxWidth = maxHeight = 8;
+		minWidth = minHeight = 7;
 		constCount = rand() % 1 + 3;
+		variation = 3;
 		break;
 	case Difficulty::Impresive:
-		maxWidth = maxHeight = 12;
+		minWidth = minHeight = 10;
+		variation = 4;
 		break;
 	case Difficulty::WorldClass:
-		maxWidth = maxHeight = 16;
+		minWidth = minHeight = 15;
+		variation = 2;
 		break;
 	}
-	this->width = std::rand() % 3 + maxWidth;
-	this->height = std::rand() % 3 + maxHeight;
+	this->width = std::rand() % variation + minWidth;
+	this->height = std::rand() % variation + minHeight;
 
 	this->map = new State * [this->width];
 	this->mapCopy = new State * [this->width];
@@ -46,7 +92,6 @@ void Board::random(Difficulty difficulty) {
 		this->map[i] = new State[this->height];
 		this->mapCopy[i] = new State[this->height];
 		for (int j = 0; j < this->height; j++) {
-			//TODO: add better algorithm to generate maps
 			this->map[i][j] = rand() % 2 == 0 ? State::Filled : State::Empty;
 		}
 	}

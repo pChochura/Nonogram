@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include <functional>
 #include <SFML/Graphics.hpp>
 #include "Enums/State.h"
@@ -9,20 +10,28 @@ class Board {
 public:
 	Board();
 	~Board();
+
+	void set(std::string);
 	void random(Difficulty);
+
 	State getAt(int x, int y);
 	void setAt(int x, int y, State state);
+
 	State getCurrentState();
 	void setCurrentState(State state);
+
 	void toggleMarked(State state);
 	void fillMarkedNot(int x, int y);
+
 	std::vector<int> getVerticalValuesFor(int x);
 	std::vector<int> calculateVerticalValuesFor(int x, State availableState = State::Filled);
 	std::vector<int> getHorizontalValuesFor(int y);
 	std::vector<int> calculateHorizontalValuesFor(int y, State availableState = State::Filled);
 	std::vector<bool> isVerticalValuesCompleteFor(int x);
 	std::vector<bool> isHorizontalValuesCompleteFor(int y);
+
 	bool isBoardCompleted();
+
 	void startTimer();
 	void stopTimer();
 	sf::Time getElapsedTime();
@@ -35,9 +44,10 @@ private:
 	void restoreMap();
 
 private:
-	std::function<void(void)> onStopTimerListner;
 	sf::Clock timer;
 	sf::Time timePassed;
+	std::function<void(void)> onStopTimerListner;
+
 	std::vector<int>* verticalValues;
 	std::vector<int>* horizontalValues;
 	State** map;

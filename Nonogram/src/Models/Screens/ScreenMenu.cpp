@@ -1,4 +1,5 @@
 #include "ScreenMenu.h"
+#include "ScreenTutorial.h"
 #include "ScreenPlay.h"
 
 void ScreenMenu::load(Context* context) {
@@ -11,6 +12,10 @@ void ScreenMenu::load(Context* context) {
 	this->stages.push_back(&stageInMenuUI);
 
 	stageDifficultyMenu.setOnClickListener([&](Difficulty diff) {
-		this->onChangeScreenListener(new ScreenPlay(diff));
+		if (diff == Difficulty::Tutorial) {
+			this->onChangeScreenListener(new ScreenTutorial);
+		} else {
+			this->onChangeScreenListener(new ScreenPlay(diff));
+		}
 	});
 }

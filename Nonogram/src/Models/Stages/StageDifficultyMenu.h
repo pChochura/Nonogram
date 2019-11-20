@@ -25,9 +25,10 @@ private:
 	std::function<void(Difficulty)> onClickListener;
 
 	enum ID {
-		ButtonBabyStyle		= (1 << 0),
-		ButtonDecent		= (1 << 1),
-		ButtonImpresive		= (1 << 2),
-		ButtonWorldClass	= (1 << 3)
+		ButtonTutorial		= (1 << 0),
+		ButtonBabyStyle		= (1 << 1),
+		ButtonDecent		= (1 << 2),
+		ButtonImpresive		= (1 << 3),
+		ButtonWorldClass	= (1 << 4)
 	};
 };

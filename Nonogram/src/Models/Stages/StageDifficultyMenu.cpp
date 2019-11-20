@@ -26,8 +26,19 @@ void StageDifficultyMenu::init(Context* context) {
 	this->difficultyMenuPos = { (context->window->getSize().x - this->difficultyMenuSize.x) / 2.0f, (context->window->getSize().y - this->difficultyMenuSize.y) / 2.0f };
 
 	this->buttons.push_back(
+		(new Button(ID::ButtonTutorial, { 200, ButtonSize::WrapContent }))
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 120.0f })
+		->withPadding({ 50, 35 })
+		->withTexture(context->textures.get(Textures::ButtonWorldClass))
+		->withText("TUTORIAL")
+		->withTextFont(context->fonts.get(Fonts::Arcon))
+		->withTextColor(sf::Color(255, 255, 255))
+		->withTextSize(20)
+		->build()
+	);
+	this->buttons.push_back(
 		(new Button(ID::ButtonBabyStyle, { 200, ButtonSize::WrapContent }))
-		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 150.0f })
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 180.0f })
 		->withPadding({ 50, 35 })
 		->withTexture(context->textures.get(Textures::ButtonBabyStyle))
 		->withText("BABY STYLE")
@@ -38,7 +49,7 @@ void StageDifficultyMenu::init(Context* context) {
 	);
 	this->buttons.push_back(
 		(new Button(ID::ButtonDecent, { 200, ButtonSize::WrapContent }))
-		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 210.0f })
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 240.0f })
 		->withPadding({ 50, 35 })
 		->withTexture(context->textures.get(Textures::ButtonDecent))
 		->withText("DECENT")
@@ -49,7 +60,7 @@ void StageDifficultyMenu::init(Context* context) {
 	);
 	this->buttons.push_back(
 		(new Button(ID::ButtonImpresive, { 200, ButtonSize::WrapContent }))
-		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 270.0f })
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 300.0f })
 		->withPadding({ 50, 35 })
 		->withTexture(context->textures.get(Textures::ButtonImpresive))
 		->withText("IMPRESIVE")
@@ -60,7 +71,7 @@ void StageDifficultyMenu::init(Context* context) {
 	);
 	this->buttons.push_back(
 		(new Button(ID::ButtonWorldClass, { 200, ButtonSize::WrapContent }))
-		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 330.0f })
+		->withPosition({ context->window->getSize().x / 2.0f - 100.0f, difficultyMenuPos.y + 360.0f })
 		->withPadding({ 50, 35 })
 		->withTexture(context->textures.get(Textures::ButtonWorldClass))
 		->withText("WORLD CLASS")
@@ -79,6 +90,9 @@ void StageDifficultyMenu::initClickListeners(Context* context) {
 			this->sound.setBuffer(this->tapSound);
 			this->sound.play();
 			switch (b->getId()) {
+			case ID::ButtonTutorial:
+				this->onClickListener(Difficulty::Tutorial);
+				break;
 			case ID::ButtonBabyStyle:
 				this->onClickListener(Difficulty::BabyStyle);
 				break;

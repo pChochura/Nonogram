@@ -111,6 +111,12 @@
     <ClCompile Include="src\Models\Stages\StageInMenuUI.cpp">
       <Filter>Source Files\Models\Stages</Filter>
     </ClCompile>
+    <ClCompile Include="src\Models\Screens\ScreenTutorial.cpp">
+      <Filter>Source Files\Models\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\Stages\StageMessage.cpp">
+      <Filter>Source Files\Models\Stages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Models\Stages\Stage.h">
@@ -182,37 +188,11 @@
     <ClInclude Include="src\Models\Stages\StageInMenuUI.h">
       <Filter>Header Files\Models\Stages</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="data\Textures\background.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\board_tile.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\board_tile_hovered.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\board_tile_lost.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\board_tile_marked.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\board_tile_marked_not.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\board_tile_selected.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\bottom_menu.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\heart.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="data\Textures\heart_broken.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClInclude Include="src\Models\Screens\ScreenTutorial.h">
+      <Filter>Header Files\Models\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Models\Stages\StageMessage.h">
+      <Filter>Header Files\Models\Stages</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
