@@ -6,7 +6,7 @@
 #include "../Stages/StageBoard.h"
 #include "../../Utils/Utils.h"
 #include "../../Utils/ResourceIdentifier.h"
-#include "../../Models/Shapes/RoundedRectangleShape.h"
+#include "../../Models/Drawables/RoundedRectangleShape.h"
 
 void StageBoard::init(Context* context) {
 	context->textures.load(Textures::BoardTile, "data/Textures/board_tile.png");

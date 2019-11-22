@@ -4,6 +4,7 @@
 #include <string>
 #include "Stage.h"
 #include "../Actors/Actor.h"
+#include "../Drawables/MultilineText.h"
 #include "../../Utils/ResourceIdentifier.h"
 
 class StageMessage : public Stage {
@@ -18,6 +19,8 @@ private:
 	void initClickListeners(Context*);
 
 private:
+	MultilineText text;
+
 	sf::Vector2f messageMenuSize;
 	sf::Vector2f messageMenuPos;
 	std::function<void(void)> onOkClickListener;

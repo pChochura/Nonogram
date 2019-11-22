@@ -1,5 +1,5 @@
 #include "Button.h"
-#include "../Shapes/RoundedRectangleShape.h"
+#include "../Drawables/RoundedRectangleShape.h"
 
 Button::Button(int id, sf::Vector2f size) {
 	this->id = id;

@@ -4,7 +4,7 @@
 #include "../Board.h"
 #include "../Actors/Button.h"
 #include "../Actors/ButtonGroup.h"
-#include "../Shapes/RoundedRectangleShape.h"
+#include "../Drawables/RoundedRectangleShape.h"
 #include "../../Utils/Utils.h"
 
 void StageInGameUI::init(Context* context) {

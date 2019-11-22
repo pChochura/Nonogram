@@ -26,12 +26,13 @@
     <ClCompile Include="src\Models\Actors\ButtonGroup.cpp" />
     <ClCompile Include="src\Models\Actors\Clickable.cpp" />
     <ClCompile Include="src\Models\Board.cpp" />
+    <ClCompile Include="src\Models\Drawables\MultilineText.cpp" />
+    <ClCompile Include="src\Models\Drawables\RoundedRectangleShape.cpp" />
     <ClCompile Include="src\Models\Game.cpp" />
     <ClCompile Include="src\Models\Screens\Screen.cpp" />
     <ClCompile Include="src\Models\Screens\ScreenMenu.cpp" />
     <ClCompile Include="src\Models\Screens\ScreenPlay.cpp" />
     <ClCompile Include="src\Models\Screens\ScreenTutorial.cpp" />
-    <ClCompile Include="src\Models\Shapes\RoundedRectangleShape.cpp" />
     <ClCompile Include="src\Models\Stages\Stage.cpp" />
     <ClCompile Include="src\Models\Stages\StageBackground.cpp" />
     <ClCompile Include="src\Models\Stages\StageBoard.cpp" />
@@ -49,6 +50,9 @@
     <ClInclude Include="src\Models\Actors\ButtonGroup.h" />
     <ClInclude Include="src\Models\Actors\Clickable.h" />
     <ClInclude Include="src\Models\Board.h" />
+    <ClInclude Include="src\Models\Drawables\MultilineText.h" />
+    <ClInclude Include="src\Models\Drawables\RoundedRectangleShape.h" />
+    <ClInclude Include="src\Models\Enums\Align.h" />
     <ClInclude Include="src\Models\Enums\Difficulty.h" />
     <ClInclude Include="src\Models\Enums\State.h" />
     <ClInclude Include="src\Models\Game.h" />
@@ -56,7 +60,6 @@
     <ClInclude Include="src\Models\Screens\ScreenMenu.h" />
     <ClInclude Include="src\Models\Screens\ScreenPlay.h" />
     <ClInclude Include="src\Models\Screens\ScreenTutorial.h" />
-    <ClInclude Include="src\Models\Shapes\RoundedRectangleShape.h" />
     <ClInclude Include="src\Models\Stages\Stage.h" />
     <ClInclude Include="src\Models\Stages\StageBackground.h" />
     <ClInclude Include="src\Models\Stages\StageBoard.h" />

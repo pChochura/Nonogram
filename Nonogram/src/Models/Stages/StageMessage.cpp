@@ -1,5 +1,7 @@
 #include "StageMessage.h"
+#include "../Enums/Align.h"
 #include "../Actors/Button.h"
+#include "../Drawables/MultilineText.h"
 
 void StageMessage::init(Context* context) {
 	context->textures.load(Textures::ButtonPlayAgain, "data/Textures/button_play_again.png");
@@ -29,6 +31,11 @@ void StageMessage::init(Context* context) {
 		->build()
 	);
 
+	this->text = MultilineText(this->message, context->fonts.get(Fonts::Arcon), 30);
+	this->text.setFillColor(sf::Color(20, 37, 70));
+	this->text.setAlignement(Align::CENTER);
+	this->text.setMaxSize(this->messageMenuSize.x - 50.0f);
+
 	initClickListeners(context);
 }
 
@@ -52,11 +59,9 @@ void StageMessage::draw(Context* context) {
 	sprite.setScale(this->messageMenuSize.x / sprite.getLocalBounds().width, this->messageMenuSize.y / sprite.getLocalBounds().height);
 	context->window->draw(sprite);
 
-	sf::Text text(this->message, context->fonts.get(Fonts::Arcon), 25);
-	text.setFillColor(sf::Color(20, 37, 70));
-	text.setOrigin(text.getLocalBounds().width / 2.0f, 0);
-	text.setPosition({ context->window->getSize().x / 2.0f, messageMenuPos.y + 50.0f });
-	context->window->draw(text);
+	this->text.setString(this->message);
+	this->text.setPosition({ (context->window->getSize().x - this->text.getLocalBounds().width) / 2.0f, messageMenuPos.y + 50.0f });
+	context->window->draw(this->text);
 
 	for (auto& button : this->buttons) {
 		button->draw(context);

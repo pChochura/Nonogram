@@ -152,14 +152,14 @@ void Board::toggleMarked(State state) {
 void Board::fillMarkedNot(int x, int y) {
 	if (calculateVerticalValuesFor(x, State::Selected) == getVerticalValuesFor(x)) {
 		for (int i = 0; i < this->height; i++) {
-			if ((this->map[x][i] & State::Selected) != State::Selected) {
+			if ((this->map[x][i] & (State::Selected | State::MarkedNot)) == State::None) {
 				this->map[x][i] = this->map[x][i] | State::Marked;
 			}
 		}
 	}
 	if (calculateHorizontalValuesFor(y, State::Selected) == getHorizontalValuesFor(y)) {
 		for (int i = 0; i < this->width; i++) {
-			if ((this->map[i][y] & State::Selected) != State::Selected) {
+			if ((this->map[i][y] & (State::Selected | State::MarkedNot)) == State::None) {
 				this->map[i][y] = this->map[i][y] | State::Marked;
 			}
 		}

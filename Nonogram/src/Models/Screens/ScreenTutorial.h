@@ -34,11 +34,11 @@ private:
 		"5 5 2222222220220222022200100"
 	};
 	std::string messages[maxLevels + 1] = {
-		"To complete Nonogram you\nhave to paint tiles in such\nway that the numbers\nmatch painted tiles count.",
-		"Great! Now we will add\nanother row to increase\ndifficulty.",
-		"If you see more than one\nnumber you have to split\npainted tiles as the numbers\nindicate.",
-		"Another row will show how\nsplitting should look like in\nmore difficult scenario.",
-		"Nice! If you want to set\nthe tile to be not paintable\njust click the right mouse button.",
-		"Congratulations! You've solved\nyour first Nonogram.\nTap OK to continue."
+		"To complete Nonogram you have to paint tiles in such way that the numbers match painted tiles count.",
+		"Great! Now we will add another row to increase difficulty.",
+		"If you see more than one number you have to split painted tiles as the numbers indicate.",
+		"Another row will show how splitting should look like in more difficult scenario.",
+		"Nice! If you want to set the tile to be not paintable just click the right mouse button.",
+		"Congratulations! You've solved your first Nonogram.\nTap OK to continue."
 	};
 };

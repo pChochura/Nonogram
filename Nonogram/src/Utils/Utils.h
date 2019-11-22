@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "ResourceIdentifier.h"
 
 namespace Utils {
@@ -38,5 +39,15 @@ namespace Utils {
 		seconds = seconds - minutes * 60;
 		sprintf_s(buffer, 10, "%02d:%02d", minutes, seconds);
 		return buffer;
+	}
+
+	inline std::vector<std::string> split(std::string input, std::string delimiter) {
+		std::vector<std::string> output;
+		size_t prevPos = 0, pos = 0;
+		for (; (pos = input.find(delimiter, prevPos)) != std::string::npos; prevPos = pos + delimiter.length()) {
+			output.push_back(input.substr(prevPos, pos - prevPos));
+		}
+		output.push_back(input.substr(prevPos));
+		return output;
 	}
 }
