@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Models\Actors\Actor.cpp" />
-    <ClCompile Include="src\Models\Actors\Animation.cpp" />
     <ClCompile Include="src\Models\Actors\Button.cpp" />
     <ClCompile Include="src\Models\Actors\ButtonGroup.cpp" />
     <ClCompile Include="src\Models\Actors\Clickable.cpp" />
@@ -45,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Models\Actors\Actor.h" />
-    <ClInclude Include="src\Models\Actors\Animation.h" />
     <ClInclude Include="src\Models\Actors\Button.h" />
     <ClInclude Include="src\Models\Actors\ButtonGroup.h" />
     <ClInclude Include="src\Models\Actors\Clickable.h" />

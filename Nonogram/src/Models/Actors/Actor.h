@@ -1,15 +1,27 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Animation.h"
 #include "Clickable.h"
 #include "../../Utils/ResourceIdentifier.h"
 
+////////////////////////////////////////////////////////////
+//	Class describing elements with properties such as opacity, rotation or visibility.
+////////////////////////////////////////////////////////////
 class Actor : public Clickable {
 public:
-	void act(float deltaTime);
+	////////////////////////////////////////////////////////////
+	//	Method invoked when SFML event occured. For instance: the mouse was moved.
+	////////////////////////////////////////////////////////////
 	virtual bool onEvent(Context*, sf::Event) = 0;
+
+	////////////////////////////////////////////////////////////
+	//	Method invoked every frame. Should be used only for drawing.
+	////////////////////////////////////////////////////////////
 	virtual void draw(Context*) const = 0;
+
+	////////////////////////////////////////////////////////////
+	// Getters and setters
+	////////////////////////////////////////////////////////////
 	sf::Vector2f getPos();
 	sf::Vector2f getSize();
 	float getAlpha();
@@ -23,5 +35,4 @@ protected:
 	bool visible;
 	sf::Vector2f pos;
 	sf::Vector2f size;
-	std::vector<Animation*> animations;
 };

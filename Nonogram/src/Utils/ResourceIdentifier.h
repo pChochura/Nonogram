@@ -42,7 +42,8 @@ namespace Sounds {
 
 namespace Fonts {
 	enum ID {
-		Arcon
+		Arcon,
+		Montserrat
 	};
 }
 
@@ -50,6 +51,9 @@ typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
 typedef ResourceHolder<sf::SoundBuffer, Sounds::ID> SoundHolder;
 typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
 
+////////////////////////////////////////////////////////////
+//	Structure holding all necessary components.
+////////////////////////////////////////////////////////////
 struct Context {
 	Context(sf::RenderWindow* window) {
 		this->window = window;

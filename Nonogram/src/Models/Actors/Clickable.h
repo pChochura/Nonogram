@@ -1,6 +1,9 @@
 #pragma once
 #include <functional>
 
+////////////////////////////////////////////////////////////
+//	Interface providing onClickListener.
+////////////////////////////////////////////////////////////
 class Clickable {
 public:
 	void setOnClickListener(std::function<void(Clickable*, bool)> onClickListener);

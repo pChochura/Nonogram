@@ -4,9 +4,17 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+////////////////////////////////////////////////////////////
+//	Class describing different resources such as:
+//	fonts, textures, sounds.
+////////////////////////////////////////////////////////////
 template <typename Resource, typename Identifier>
 class ResourceHolder {
 public:
+	////////////////////////////////////////////////////////////
+	//	Loads the file with the given {@param filename} and 
+	//	saves it to the list with the given {@param id}.
+	////////////////////////////////////////////////////////////
 	void load(Identifier id, std::string filename) {
 		std::unique_ptr<Resource> resource(new Resource());
 

@@ -1,5 +1,9 @@
 #pragma once
 
+////////////////////////////////////////////////////////////
+//	States of map tiles with binary operators to stack them. 
+//	Thus they have to be powers of 2.
+////////////////////////////////////////////////////////////
 enum class State {
 	None		=	0,
 	Empty		=	(1 << 1),

@@ -78,9 +78,6 @@
     <ClCompile Include="src\Models\Screens\ScreenMenu.cpp">
       <Filter>Source Files\Models\Screens</Filter>
     </ClCompile>
-    <ClCompile Include="src\Models\Actors\Animation.cpp">
-      <Filter>Source Files\Models\Actors</Filter>
-    </ClCompile>
     <ClCompile Include="src\Models\Actors\Actor.cpp">
       <Filter>Source Files\Models\Actors</Filter>
     </ClCompile>
@@ -162,9 +159,6 @@
       <Filter>Header Files\Models\Actors</Filter>
     </ClInclude>
     <ClInclude Include="src\Models\Actors\Button.h">
-      <Filter>Header Files\Models\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Models\Actors\Animation.h">
       <Filter>Header Files\Models\Actors</Filter>
     </ClInclude>
     <ClInclude Include="src\Models\Enums\State.h">

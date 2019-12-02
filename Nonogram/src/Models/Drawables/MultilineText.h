@@ -4,12 +4,23 @@
 #include <vector>
 #include "../Enums/Align.h"
 
+////////////////////////////////////////////////////////////
+//	Class used to display multiple lines of text as a 
+//	widget more easily with align capabilities.
+////////////////////////////////////////////////////////////
 class MultilineText : public sf::Drawable {
 public:
 	MultilineText();
 	MultilineText(const std::string& string, const sf::Font& font, unsigned int characterSize = 30);
+
+	////////////////////////////////////////////////////////////
+	//	@inheritDoc
+	////////////////////////////////////////////////////////////
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const override;
 
+	////////////////////////////////////////////////////////////
+	//	Setters
+	////////////////////////////////////////////////////////////
 	void setString(std::string);
 	void setFillColor(sf::Color);
 	void setPosition(sf::Vector2f);
@@ -17,6 +28,9 @@ public:
 	void setAlignement(Align);
 	void setMaxSize(float);
 
+	////////////////////////////////////////////////////////////
+	//	Getters
+	////////////////////////////////////////////////////////////
 	sf::FloatRect getLocalBounds();
 
 	void recalculatePosition();
