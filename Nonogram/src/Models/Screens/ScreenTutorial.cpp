@@ -22,7 +22,7 @@ void ScreenTutorial::load(Context* context) {
 		if (this->currentLevel < this->maxLevels) {
 			this->stages.pop_back();
 			this->board->set(this->levels[this->currentLevel]);
-			resetBoardScale(context);
+			this->board->resetBoardScale(context);
 		} else {
 			onChangeScreenListener(new ScreenPlay(Difficulty::BabyStyle));
 		}
@@ -41,7 +41,7 @@ void ScreenTutorial::load(Context* context) {
 
 	this->board->padding = { 150, 200 };
 
-	resetBoardScale(context);
+	this->board->resetBoardScale(context);
 
 	this->stageBoard.setBoard(this->board);
 	this->stageBoardValues.setBoard(this->board);
@@ -52,19 +52,4 @@ void ScreenTutorial::load(Context* context) {
 	view.zoom(1.5f);
 	this->stageBoard.setView(view);
 	this->stageBoardValues.setView(view);
-}
-
-void ScreenTutorial::resetBoardScale(Context* context) {
-	auto windowSize = context->window->getSize();
-
-	float width = (float)(windowSize.x - this->board->padding.x) / this->board->width;
-	float height = (float)(windowSize.y - this->board->padding.y) / this->board->height;
-
-	this->board->scaleAmount = 1.1f;
-	this->board->scale = 1.5f;
-
-	this->board->tileSize = std::min(width, height);
-	this->board->tileMargin = { (int)(this->board->tileSize / 20), (int)(this->board->tileSize / 20) };
-	this->board->offset.x = (int)(windowSize.x - this->board->width * this->board->tileSize + this->board->padding.x / 2) / 2;
-	this->board->offset.y = (int)(windowSize.y - this->board->height * this->board->tileSize + this->board->padding.y / 2) / 2;
 }

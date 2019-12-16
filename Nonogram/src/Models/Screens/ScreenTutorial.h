@@ -19,9 +19,6 @@ public:
 	virtual void load(Context*) override;
 
 private:
-	void resetBoardScale(Context*);
-
-private:
 	Board* board;
 
 	StageBackground stageBackground;

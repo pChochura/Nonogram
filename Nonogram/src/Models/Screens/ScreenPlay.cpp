@@ -17,8 +17,8 @@ void ScreenPlay::load(Context* context) {
 		this->onChangeScreenListener(new ScreenMenu);
 	});
 
-	this->stageComplete.setOnPlayAgainClickListener([&]() {
-		this->board->random(this->difficulty);
+	this->stageComplete.setOnPlayAgainClickListener([&, context]() {
+		this->board->random(context, this->difficulty);
 		this->stages.pop_back();
 	});
 
@@ -35,7 +35,7 @@ void ScreenPlay::load(Context* context) {
 		this->stageComplete.setDifficulty(this->difficulty);
 	});
 
-	this->board->random(this->difficulty);
+	this->board->random(context, this->difficulty);
 
 	auto windowSize = context->window->getSize();
 

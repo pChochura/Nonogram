@@ -5,7 +5,7 @@
 Game::Game(Screen* firstScreen, std::string title, int width, int height) : screen(firstScreen) {
 	this->width = width;
 	this->height = height;
-	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Default, sf::ContextSettings(0, 0, 8)));
+	this->context = new Context(new sf::RenderWindow(sf::VideoMode(this->width, this->height), title, sf::Style::Fullscreen, sf::ContextSettings(0, 0, 8)));
 
 	changeScreen(firstScreen);
 }

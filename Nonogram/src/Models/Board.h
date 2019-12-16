@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "Enums/State.h"
 #include "Enums/Difficulty.h"
+#include "../Utils/ResourceIdentifier.h"
 
 ////////////////////////////////////////////////////////////
 //	Class describing whole board
@@ -15,7 +16,7 @@ public:
 	~Board();
 
 	void set(std::string);
-	void random(Difficulty);
+	void random(Context*, Difficulty);
 
 	State getAt(int x, int y);
 	void setAt(int x, int y, State state);
@@ -76,6 +77,7 @@ public:
 	////////////////////////////////////////////////////////////
 	bool isBoardCompleted();
 
+	void resetBoardScale(Context*);
 	void startTimer();
 	void stopTimer();
 	sf::Time getElapsedTime();

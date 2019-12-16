@@ -60,7 +60,7 @@ void Board::set(std::string input) {
 	}
 }
 
-void Board::random(Difficulty difficulty) {
+void Board::random(Context* context, Difficulty difficulty) {
 	int minWidth = 1, minHeight = 1;
 	int variation = 1, constCount = 0;
 	switch (difficulty) {
@@ -106,6 +106,7 @@ void Board::random(Difficulty difficulty) {
 
 	calculateVerticalValues();
 	calculateHorizontalValues();
+	resetBoardScale(context);
 	startTimer();
 }
 
@@ -319,6 +320,21 @@ bool Board::isBoardCompleted() {
 		}
 	}
 	return true;
+}
+
+void Board::resetBoardScale(Context* context) {
+	auto windowSize = context->window->getSize();
+
+	float width = (float)(windowSize.x - this->padding.x) / this->width;
+	float height = (float)(windowSize.y - this->padding.y) / this->height;
+
+	this->scaleAmount = 1.1f;
+	this->scale = 1.5f;
+
+	this->tileSize = std::min(width, height);
+	this->tileMargin = { (int)(this->tileSize / 20), (int)(this->tileSize / 20) };
+	this->offset.x = (int)(windowSize.x - this->width * this->tileSize + this->padding.x / 2) / 2;
+	this->offset.y = (int)(windowSize.y - this->height * this->tileSize + this->padding.y / 2) / 2;
 }
 
 void Board::startTimer() {
