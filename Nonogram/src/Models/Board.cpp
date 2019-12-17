@@ -1,6 +1,7 @@
 #include <time.h>
 #include <cstdlib>
 #include <vector>
+#include <fstream>
 #include <iostream>
 #include "Board.h"
 #include "Enums/State.h"
@@ -20,7 +21,7 @@ Board::~Board() {
 	}
 }
 
-void Board::set(std::string input) {
+void Board::set(Context* context, std::string input) {
 	sscanf_s(input.c_str(), "%d %d", &this->width, &this->height);
 	std::reverse(input.begin(), input.end());
 
@@ -51,6 +52,7 @@ void Board::set(std::string input) {
 
 	calculateVerticalValues();
 	calculateHorizontalValues();
+	resetBoardScale(context);
 	startTimer();
 
 	for (int i = 0; i < this->height; i++) {
@@ -82,6 +84,20 @@ void Board::random(Context* context, Difficulty difficulty) {
 		minWidth = minHeight = 15;
 		variation = 2;
 		break;
+	case Difficulty::FromFile:
+		std::ifstream file;
+		file.open("data/Boards/board.txt");
+		if (file.good()) {
+			std::vector<std::string> boards;
+			do {
+				char line[100];
+				file.getline(line, 100);
+				boards.push_back(line);
+			} while (!file.eof());
+
+			set(context, boards[rand() % boards.size()]);
+		}
+		return;
 	}
 	this->width = std::rand() % variation + minWidth;
 	this->height = std::rand() % variation + minHeight;

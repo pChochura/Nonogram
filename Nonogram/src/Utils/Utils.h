@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "ResourceIdentifier.h"
+#include "../Models/Enums/BlendMode.h"
 
 namespace Utils {
 	inline void moveView(Context* context, sf::View* view, sf::Vector2f translation) {

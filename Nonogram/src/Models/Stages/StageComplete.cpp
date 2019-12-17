@@ -96,8 +96,11 @@ void StageComplete::draw(Context* context) {
 	case Difficulty::Impresive:
 		diff = "Impresive";
 		break;
-	default:
+	case Difficulty::WorldClass:
 		diff = "World Class";
+		break;
+	default:
+		diff = "a";
 		break;
 	}
 

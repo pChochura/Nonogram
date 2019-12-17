@@ -15,7 +15,7 @@ public:
 	Board();
 	~Board();
 
-	void set(std::string);
+	void set(Context*, std::string);
 	void random(Context*, Difficulty);
 
 	State getAt(int x, int y);

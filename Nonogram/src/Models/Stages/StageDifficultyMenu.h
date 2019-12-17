@@ -29,6 +29,7 @@ private:
 		ButtonBabyStyle		= (1 << 1),
 		ButtonDecent		= (1 << 2),
 		ButtonImpresive		= (1 << 3),
-		ButtonWorldClass	= (1 << 4)
+		ButtonWorldClass	= (1 << 4),
+		ButtonFromFile		= (1 << 5)
 	};
 };

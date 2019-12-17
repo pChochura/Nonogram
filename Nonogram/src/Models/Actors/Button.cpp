@@ -38,8 +38,7 @@ void Button::draw(Context* context) const {
 	}
 
 	if (this->hasBackgroundColor) {
-		std::cout << "Kurwix";
-		sf::Color maskColor = isHovering(context) ? sf::Color(200, 200, 200) : sf::Color(255, 255, 255);
+		sf::Color maskColor = isHovering(context) ? sf::Color(200, 200, 200) : sf::Color::White;
 
 		sf::RoundedRectangleShape rect(this->size, 5, 50);
 		rect.setFillColor(this->backgroundColor * maskColor);
@@ -48,7 +47,7 @@ void Button::draw(Context* context) const {
 	}
 
 	if (this->hasTexture) {
-		sf::Color maskColor = isHovering(context) ? sf::Color(200, 200, 200, 255) : sf::Color(255, 255, 255, 255);
+		sf::Color maskColor = isHovering(context) ? sf::Color(200, 200, 200) : sf::Color::White;
 
 		sf::Sprite sprite(this->texture);
 		sprite.setPosition(this->pos);

@@ -8,5 +8,6 @@ enum class Difficulty {
 	BabyStyle,
 	Decent,
 	Impresive,
-	WorldClass
+	WorldClass,
+	FromFile
 };

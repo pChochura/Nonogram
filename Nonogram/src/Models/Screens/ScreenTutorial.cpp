@@ -21,8 +21,7 @@ void ScreenTutorial::load(Context* context) {
 		this->currentLevel++;
 		if (this->currentLevel < this->maxLevels) {
 			this->stages.pop_back();
-			this->board->set(this->levels[this->currentLevel]);
-			this->board->resetBoardScale(context);
+			this->board->set(context, this->levels[this->currentLevel]);
 		} else {
 			onChangeScreenListener(new ScreenPlay(Difficulty::BabyStyle));
 		}
