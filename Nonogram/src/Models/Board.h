@@ -18,6 +18,8 @@ public:
 	void set(Context*, std::string);
 	void random(Context*, Difficulty);
 
+	State** getMap();
+
 	State getAt(int x, int y);
 	void setAt(int x, int y, State state);
 

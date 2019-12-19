@@ -7,6 +7,7 @@
 #include "Enums/State.h"
 #include "Enums/Difficulty.h"
 #include "../Utils/Utils.h"
+#include "../Utils/Solver.h"
 
 Board::Board() : width(0), height(0), currentState(State::Selected), verticalValues(nullptr), horizontalValues(nullptr), map(nullptr) {
 	std::srand((unsigned int) time(NULL));
@@ -124,6 +125,12 @@ void Board::random(Context* context, Difficulty difficulty) {
 	calculateHorizontalValues();
 	resetBoardScale(context);
 	startTimer();
+
+	Solver::solve(this);
+}
+
+State** Board::getMap() {
+	return this->map;
 }
 
 State Board::getAt(int x, int y) {
@@ -132,7 +139,6 @@ State Board::getAt(int x, int y) {
 
 void Board::setAt(int x, int y, State state) {
 	this->map[x][y] = state;
-
 	if (isBoardCompleted()) {
 		stopTimer();
 	}

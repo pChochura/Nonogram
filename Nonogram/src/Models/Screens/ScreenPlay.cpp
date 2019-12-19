@@ -37,6 +37,8 @@ void ScreenPlay::load(Context* context) {
 
 	this->board->random(context, this->difficulty);
 
+	//this->board->set(context, "7 5 11011011010101111011111011111101110");
+
 	auto windowSize = context->window->getSize();
 
 	float width = (float)(windowSize.x - this->board->padding.x) / this->board->width;

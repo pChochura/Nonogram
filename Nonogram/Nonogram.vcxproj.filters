@@ -197,5 +197,8 @@
     <ClInclude Include="src\Models\Enums\Align.h">
       <Filter>Header Files\Models\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utils\Solver.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

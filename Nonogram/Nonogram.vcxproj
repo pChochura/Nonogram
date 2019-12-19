@@ -68,6 +68,7 @@
     <ClInclude Include="src\Models\Stages\StageMessage.h" />
     <ClInclude Include="src\Utils\ResourceHolder.h" />
     <ClInclude Include="src\Utils\ResourceIdentifier.h" />
+    <ClInclude Include="src\Utils\Solver.h" />
     <ClInclude Include="src\Utils\Utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
